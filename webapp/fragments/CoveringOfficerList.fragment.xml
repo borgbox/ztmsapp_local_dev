@@ -1,0 +1,51 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<Table id="idCovOffTable" inset="false" items="{path : 'coveringCount>/CoveringOfficerSet'  , parameters:{expand : 'CoveringOfficerSet'} }" updateFinished="onUpdateFinishedCoOfficer"
+		growingScrollToLoad="true" growing="true" sticky="ColumnHeaders,HeaderToolbar">
+		<headerToolbar>
+			<OverflowToolbar id="otbSubheader">
+				<Title text="{= ${currentRole>/currentRole} === 'HR_ADMIN' ? ${i18n>mgrview_assigncovoff_for} : ${i18n>mgrview_assigncovoff} }" level="H2"/>
+				<Input id="iptCovOfficerSearch" type="Text" placeholder="" width="25em" showSuggestion="false" showValueHelp="true" valueHelpRequest="onEmployeeCovOfficerSearchHelp($event,true)"
+					value="{currentCoveringOfficer>/pernr}" liveChange="onChangeCoveringOfficer" visible="{= ${currentRole>/currentRole} === 'HR_ADMIN'}"></Input>
+				<ToolbarSpacer/>
+				<Button id="editButton" enabled="{= ${coveringCount>/length} > 0}" text="{i18n>generic_edit}" icon="sap-icon://edit" type="Transparent"
+					press="onEdit"/>
+				<Button id="cancelButton" text="{i18n>generic_display}" type="Transparent" press="onCancel" visible="false"/>
+				<Button id="addButton" text="{i18n>generic_add}" icon="sap-icon://add" type="Transparent" press="onAdd"/>
+				<Button id="saveButton" enabled="{= ${coveringCount>/length} > 0}" text="{i18n>generic_save}" type="Transparent" press="onSave"
+					visible="false"/>
+				<Button icon="sap-icon://message-popup" text="{messages/messagesLength}" visible="false" type="Emphasized" press="handleMessagePopoverPress"/>
+				<Button icon="sap-icon://refresh" press=".refreshCoveringOfficer"/>
+			</OverflowToolbar>
+		</headerToolbar>
+		<columns>
+			<Column width="12em">
+				<Text text="{i18n>mgrview_fromdate}"/>
+			</Column>
+			<Column width="12em">
+				<Text text="{i18n>mgrview_todate}"/>
+			</Column>
+			<Column width="20em">
+				<Text text="{i18n>mgrview_covoff}"/>
+			</Column>
+			<Column hAlign="Right">
+				<Text text="{i18n>mgrview_reason}"/>
+			</Column>
+			<Column width="12em" hAlign="Right" id="actions" visible="false">
+				<Text text="{i18n>generic_actions}"/>
+			</Column>
+			<Column width="6em" hAlign="Right" id="status" visible="true">
+				<Text text="{i18n>label_status}"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Text text="{ path: 'coveringOfficer>Begda', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+					<Text text="{ path: 'coveringOfficer>Endda', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+					<Text text="{coveringOfficer>CovrngOfc} ({coveringOfficer>CovrngOfcName})"/>
+					<Text text="{ path: 'coveringOfficer>Reason' }"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</core:FragmentDefinition>

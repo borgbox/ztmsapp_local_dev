@@ -1,0 +1,139 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:ifx="com.infineon.ztmsapp.custom" height="100%" width="100%"
+	controllerName="com.infineon.ztmsapp.controller.MainView">
+	<App id="idAppControl">
+		<pages>
+			<Page enableScrolling="false" title="{i18n>app_title_role_select}" busy="{appView>/busy}" class="TMSAppBackground" busyIndicatorDelay="0">
+				<headerContent>
+					<core:Fragment id="idHeader" fragmentName="com.infineon.ztmsapp.fragments.Header" type="XML"></core:Fragment>
+				</headerContent>
+				<content>
+					<uxap:ObjectPageLayout id="ObjectPageLayoutMain" enableLazyLoading="true" showTitleInHeaderContent="true" useIconTabBar="true"
+						useTwoColumnsForLargeScreen="true" alwaysShowContentHeader="true" upperCaseAnchorBar="false">
+						<!-- useIconTabBar="true/false": used to define if the sections should be listed and can be scrolled (false) or if one has to select the sections to see the data (true) -->
+						<uxap:headerTitle class="sapUiNoContentPadding">
+							<uxap:ObjectPageHeader class="sapUiNoContentPadding" id="ObjectPageHeader" isObjectIconAlwaysVisible="false"
+								isObjectTitleAlwaysVisible="false" isObjectSubtitleAlwaysVisible="false" isActionAreaAlwaysVisible="false" objectTitle="{Fullname}"
+								objectImageShape="Circle" objectImageDensityAware="false" showPlaceholder="false"/>
+						</uxap:headerTitle>
+						<uxap:headerContent width="90%" class="sapUiNoPadding sapUiNoContentPadding sapUiNoMargin">
+							<FlexBox id="employeeDataHeader" alignItems="Start" justifyContent="SpaceBetween" width="90%">
+								<items>
+									<l:VerticalLayout class="sapUiNoMargin">
+										<ObjectStatus title="{i18n>label_employee}" text="{Employee}"/>
+										<ObjectStatus title="{i18n>label_shiftgroup}" text="{Shiftgroup}"/>
+									</l:VerticalLayout >
+									<l:VerticalLayout class="sapUiNoMargin">
+										<ObjectStatus title="{i18n>label_orgunit}" text="{Orgunittext}"/>
+										<ObjectStatus title="{i18n>label_costcenter}" text="{Costcenter}"/>
+									</l:VerticalLayout>
+								</items>
+							</FlexBox>
+							<FlexBox id="msgNoEmployee" visible="false" alignItems="Center" justifyContent="Center" width="100%">
+								<MessageStrip text="{i18n>msg_error_not_employee_assigned}" type="Error" showIcon="true"></MessageStrip>
+							</FlexBox>
+						</uxap:headerContent>
+						<uxap:ObjectPageSection titleUppercase="false" showTitle="false" visible="true">
+							<uxap:ObjectPageSubSection class="sapUxAPObjectPageSubSectionFitContainer" titleUppercase="false">
+								<FlexBox height="100%" alignItems="Center" justifyContent="Center">
+									<items>
+										<GenericTile id="toEmployeeView" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" visible="false" header="Employee"
+											press="tilePressed" subheader="My Calendar, My Attendances" frameType="Auto" tooltip="My Calendar, My Attendances">
+											<customData>
+												<core:CustomData key="route" value="EmployeeView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://employee"/>
+											</TileContent>
+										</GenericTile>
+										<GenericTile id="managertile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" visible="false" header="Manager"
+											press=".tilePressed($event,'MANAGER')" tooltip="Approve OT, Approve Shifts, Request Shift" subheader="Approve/Create OT/Shifts"
+											frameType="Auto">
+											<customData>
+												<core:CustomData key="route" value="ManagerView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://manager"/>
+											</TileContent>
+										</GenericTile>
+										<GenericTile id="approvL2tile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" visible="false" header="{i18n>approver_l2}"
+											press=".tilePressed($event,'APPROV_L2')" tooltip="Approve OT, Approve Shifts, Request Shift" subheader="Approve/Create OT/Shifts"
+											frameType="Auto">
+											<customData>
+												<core:CustomData key="route" value="ManagerView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://manager"/>
+											</TileContent>
+										</GenericTile>
+										<GenericTile id="hradmintile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" visible="false" header="{i18n>hr_admin}"
+											press=".tilePressed($event,'HR_ADMIN')" tooltip="{i18n>hr_admin_default}" subheader="{i18n>hr_admin_default}" frameType="Auto">
+											<customData>
+												<core:CustomData key="route" value="ManagerView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://manager"/>
+											</TileContent>
+										</GenericTile>
+										<GenericTile id="requestortile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" header="Requestor" visible="false"
+											press=".tilePressed($event,'REQUESTOR')" frameType="Auto" tooltip="{i18n>requestor_text}" subheader="{i18n>requestor_text}">
+											<customData>
+												<core:CustomData key="route" value="ManagerView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://manager"/>
+											</TileContent>
+										</GenericTile>
+										<GenericTile id="supervisortile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" header="Supervisor" visible="false"
+											press=".tilePressed($event,'SUPERVISOR')" frameType="Auto" tooltip="{i18n>supervisor_text}" subheader="{i18n>supervisor_text}">
+											<customData>
+												<core:CustomData key="route" value="ManagerView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://manager"/>
+											</TileContent>
+										</GenericTile>
+										<GenericTile id="mdleveltile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" header="{i18n>md_level}" visible="false"
+											press=".tilePressed($event,'MD_LEVEL')" frameType="Auto" tooltip="{i18n>mdlevel_text}" subheader="{i18n>mdlevel_text}">
+											<customData>
+												<core:CustomData key="route" value="ManagerView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://manager"/>
+											</TileContent>
+										</GenericTile>
+										<GenericTile id="supportertile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" visible="false" header="Supporter"
+											press="tilePressed" tooltip="TMS Admin tools" subheader="Proxy,Support,TMS Parameters" frameType="Auto">
+											<customData>
+												<core:CustomData key="route" value="SupportView" writeToDom="false"/>
+											</customData>
+											<TileContent>
+												<ImageContent src="sap-icon://wrench"/>
+											</TileContent>
+										</GenericTile>										
+										<!--<GenericTile id="requestortile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" header="Requestor" visible="false" press="tilePressed" frameType="Auto" tooltip="Request on behalf" subheader="Request on behalf" visible="false">
+							<customData>
+								<core:CustomData key="route" value="toRequestorView" writeToDom="false"/>
+							</customData>
+							<TileContent>
+								<ImageContent src="sap-icon://request"/>
+							</TileContent>
+						</GenericTile>
+						<GenericTile id="hradmintile" class="sapUiLargeMarginEnd sapUiTinyMarginTop tileLayout" header="HR Admin" visible="false" press="tilePressed" frameType="Auto" subheader="HR Administrative functions" visible="false">
+							<customData>
+								<core:CustomData key="route" value="toHRAdminView" writeToDom="false"/>
+							</customData>
+							<TileContent>
+								<ImageContent src="sap-icon://leads"/>
+							</TileContent>
+						</GenericTile>-->
+									</items>
+								</FlexBox>
+							</uxap:ObjectPageSubSection>
+						</uxap:ObjectPageSection>
+					</uxap:ObjectPageLayout>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

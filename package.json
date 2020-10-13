@@ -1,0 +1,27 @@
+{
+  "name": "ztmsapp",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "devDependencies": {
+    "@sap/ui5-builder-webide-extension": "1.0.9",
+    "@ui5/cli": "1.7.0",
+    "cors-anywhere": "^0.4.1",
+    "local-cors-proxy": "^1.0.2",
+    "ui5-task-nwabap-deployer": "^1.0.9"
+  },
+  "scripts": {
+    "serve": "http-server -c-1",
+    "serve-proxy": "npm run serve & npm run local-proxy",
+    "build": "ui5 build --include-task=generateManifestBundle generateCachebusterInfo", 
+    "local-proxy": "lcp --proxyUrl http://netofrancisc:Zagadka1952%23@sapdps.sap.infineon.com:8058/sap/opu/odata/sap/ZHR_TMS_CORE_SRV/",
+    "upload": "ui5 build --config ui5-dist.yaml --exclude-task * --include-task ui5-task-nwabap-deployer",
+    "deploy": "npm-run-all build upload"    
+  },
+  "ui5": {
+    "dependencies": [
+      "@sap/ui5-builder-webide-extension",
+      "ui5-task-nwabap-deployer"
+    ]
+  }
+}

@@ -1,0 +1,634 @@
+/*.sapMInputValHelp {
+    position: absolute;
+    top: 0.3125rem;
+    right: 0.0625rem;
+    height: 2.375rem;
+    width: 2.375rem;
+    box-sizing: border-box;
+}*/
+.sapUiTableRowHvr .sapUiTableRowSelectionCell::after {
+    border-color: #478f7c !important;
+}
+.sapMCbHoverable:hover {
+    border-color: #478f7c;
+}
+
+.sapMTableTBody:not(.sapMListTblHasPopin)>.sapMLIBSelected, .sapMTableTBody.sapMListTblHasPopin>.sapMLIBSelected + .sapMListTblSubRow {
+    box-shadow: inset 0 -0.0625rem #478f7c;
+}
+
+.sapUiTableSelectAllCheckBox::after, .sapUiTableRowSelectionCell::after {
+    color: #478f7c !important;
+} 
+.sapUiTableRowSel>.sapUiTableCell {
+    border-bottom-color: #478f7c !important;
+}
+.sapUiTableContentRow.sapUiTableRowSel {
+    background-color: #dbeae5 !important;
+}
+.sapMLIB.sapMLIBSelected {
+    background: #dbeae5;
+}
+.sapMLIBHoverable.sapMLIBSelected:hover {
+    background: #dbeae5;
+	
+}
+
+.sapMIBar-CTX.sapMHeader-CTX:not(.sapMBtnDisabled)>.sapMBtnActive,
+.sapMIBar-CTX.sapMFooter-CTX:not(.sapMBtnDisabled)>.sapMBtnActive {
+    background-color: #478f7c !important;
+    color: #ffffff;
+    text-shadow: none;
+}
+
+.greenLabel {
+    background-color: #478f7c;
+    color: #ffffff;
+    text-shadow: none;
+}
+
+.sapMTokenSelected, .sapMToken.sapMTokenReadOnly.sapMTokenSelected {
+    color: #ffffff;
+    background: #478f7c;
+    border: 0.0625rem solid #478f7c;
+}
+
+html.sap-desktop .sapMToken.sapMTokenSelected:hover {
+    background: #478f7c;
+    border: 0.0625rem solid #478f7c;
+}
+
+.fontGreen {
+    color: #478f7c;
+}
+.fontGreenImportant {
+    color: #478f7c !important;
+}
+.fontWhite {
+    color: #fff;
+}
+
+.sapMBtnBack, .sapMBtnTransparent {
+    background-color: #3a7566;
+}
+
+.sapMSltPressed:not(.sapMSltDisabled):not(.sapMSltState) {
+    border-color: #3a7566;
+}
+
+.sapMIBar-CTX.sapMHeader-CTX:not(.sapMBtnDisabled)>.sapMBtnActive,
+.sapMIBar-CTX.sapMFooter-CTX:not(.sapMBtnDisabled)>.sapMBtnActive {
+    background-color: #478f7c !important;
+}
+
+.sapMCb.sapMCbWarn .sapMCbBg.sapMCbMarkChecked:before {
+    color: #478f7c;
+}
+
+.sapMSltArrow {
+    color: #478f7c;
+}
+
+.sapMShellBrandingBar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 1;
+    background-color: #478f7c;
+}
+
+.sapMGT {
+    background: #dbeae5;
+}
+
+.sapMCbBg.sapMCbMarkChecked:before {
+    color: #478f7c;
+}
+
+.sapMLIB.sapMLIBSelected {
+    border-bottom: 0.0625rem solid #478f7c;
+}
+
+.sapMGrowingListTriggerText>.sapMSLITitle {
+    color: #478f7c;
+}
+
+.sapMGrowingListDescription.sapMSLIDescription {
+    color: #478f7c;
+}
+
+.sapMInputBaseIconPressed .sapMInputBaseContentWrapper:not(.sapMInputBaseReadonlyWrapper):not(.sapMInputBaseContentWrapperState):not(.sapMInputBaseDisabledWrapper) {
+    border-color: #3a7566;
+}
+
+.sapMTB-Transparent-CTX .sapMBtn:hover>.sapMBtnDefault.sapMBtnHoverable {
+    background: #3a7566;
+}
+
+.sapMImageContentImageIcon.sapUiIcon {
+    color: #478f7c !important;
+}
+
+.sapMIBar-CTX .sapMTitle {
+    color: #fff;
+}
+
+.sapUiCalendarApp.sapUiCalendarAppSel,
+.sapUiCalendarApp:active,
+.sapUiCalendarApp.sapUiCalendarAppSel:active {
+    color: #ffffff;
+    background-color: #dbeae5 !important;
+}
+
+.sapMIBar.sapMHeader-CTX {
+    background-color: #478f7c !important;
+}
+
+.sapUiLocalBusyIndicatorAnimation>div::after {
+    box-shadow: inset 0 0 0 0 #478f7c;
+}
+
+.sapUiLocalBusyIndicatorAnimation>div::before {
+    background: #478f7c;
+}
+
+html[data-sap-ui-browser^="sf"] .sapMInputBaseInner::selection,
+html[data-sap-ui-browser^="cr"] .sapMInputBaseInner::selection {
+    background: #478f7c;
+    background-image: initial;
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: rgb(71, 143, 124);
+    color: rgba(255, 255, 255, 0.99);
+}
+
+.sapMIBar-CTX .sapMBtnInner,
+.sapMBar .sapMBtnInner,
+.sapMHeader-CTX .sapMBtnInner,
+.sapMFooter-CTX .sapMBtnInner {
+    background: #478f7c;
+    border-color: transparent;
+}
+
+
+/*Borders around input*/
+
+.sapMInputBaseContentWrapper:not(.sapMInputBaseReadonlyWrapper):not(.sapMInputBaseContentWrapperState):not(.sapMInputBaseDisabledWrapper):active {
+    border-color: #478f7c;
+}
+
+.sapMInputBaseContentWrapper:not(.sapMInputBaseReadonlyWrapper):not(.sapMInputBaseContentWrapperState):not(.sapMInputBaseDisabledWrapper):hover {
+    border-color: #478f7c;
+}
+
+.sapUiSizeCompact .sapUxAPAnchorBar .sapUxAPAnchorBarButton.sapUxAPAnchorBarButtonSelected .sapMBtnDefault .sapMBtnContent,
+.sapUxAPAnchorBar .sapUxAPAnchorBarButton.sapUxAPAnchorBarButtonSelected .sapMBtnDefault .sapMBtnContent {
+    color: #478f7c !important;
+}
+
+.sapUiSizeCompact .sapUxAPAnchorBar .sapUxAPAnchorBarButton.sapUxAPAnchorBarButtonSelected .sapMBtnDefault .sapMBtnContent::after,
+.sapUxAPAnchorBar .sapUxAPAnchorBarButton.sapUxAPAnchorBarButtonSelected .sapMBtnDefault .sapMBtnContent::after {
+    background-color: #478f7c !important;
+}
+
+.sapMTB-Transparent-CTX .sapMBtn:not(.sapMBtnDisabled)>.sapMBtnDefault.sapMBtnActive {
+    background-color: #3a7566;
+}
+
+.sapMIBar-CTX.sapMHeader-CTX :not(.sapMBtnDisabled)>.sapMBtnActive, .sapMIBar-CTX.sapMFooter-CTX :not(.sapMBtnDisabled)>.sapMBtnActive {
+    background-color: #366d5e;
+}
+
+span[id*='anchBar'][id$='anchor-inner'] {
+    background-color: transparent !important;
+}
+
+.sapMBtnInnerCustom .sapMTB-Transparent-CTX .sapMBtn:not(.sapMBtnDisabled)>.sapMBtnDefault.sapMBtnActive {
+    background-color: #3a7566;
+    border-color: #3a7566;
+}
+
+:not(.sapMBtnDisabled)>.sapMBtnInner.sapMBtnActive {
+    border-color: #3a7566;
+}
+
+.sapMInputBaseIcon {
+    color: #478f7c !important;
+}
+
+.sapUiCalHead>.sapUiCalHeadB,
+.sapUiCalCancel,
+html.sap-desktop .sapUiCalHead>.sapUiCalHeadB:hover,
+html.sap-desktop .sapUiCalHead>.sapUiCalHeadB:focus {
+    color: #478f7c !important;
+}
+
+.sapUiCalHead>button:active,
+.sapUiCalCancel:active,
+html.sap-desktop .sapUiCalHead>button:active,
+html.sap-desktop .sapUiCalHead>button:active>.sapUiCalHeadBAddText,
+html.sap-desktop .sapUiCalCancel:active {
+    background-color: #3a7566 !important;
+    color: #ffffff;
+}
+
+.sapMTimePickerContainer .sapMTPColumn .sapMTimePickerSlider .sapMTimePickerItem {
+    background: #3a7566;
+}
+
+.sapMTimePickerContainer .sapMTPColumn .sapMTimePickerSlider .sapMTimePickerItem:active {
+    background: #3a7566;
+}
+
+.sapMTimePickerContainer .sapMTPColumn.sapMTPSliderExpanded .sapMTimePickerSlider .sapMTPPickerSelectionFrame:active + ul>li.sapMTimePickerItem.sapMTimePickerItemSelected {
+    background: #3a7566;
+}
+
+.sapMTimePickerContainer .sapMTPColumn.sapMTPSliderExpanded .sapMTimePickerSlider .sapMTPPickerSelectionFrame {
+    border: 0.125rem solid #478f7c;
+}
+
+.sapMTimePickerContainer .sapMTPColumn.sapMTPSliderExpanded .sapMTimePickerSlider .sapMTimePickerItem:active {
+    background: #478f7c;
+}
+
+.sapMTimePickerContainer .sapMTPColumn .sapMTimePickerSlider .sapMTimePickerItem:hover {
+    background: #478f7c;
+}
+
+.sapUiCalHead>button,
+.sapUiCalCancel {
+    color: #478f7c !important;
+}
+
+.sapUiUnifiedLegendSelected>.sapUiUnifiedLegendSquare>.sapUiUnifiedLegendSquareColor {
+    background: #478f7c !important;
+}
+
+:not(.sapMBtnDisabled)>span.sapMBtnInner.sapMBtnEmphasized.sapMBtnActive {
+    background-color: #478f7c;
+    border-color: #478f7c;
+    border-top-color: #478f7c;
+    border-right-color: #478f7c;
+    border-bottom-color: #478f7c;
+    border-left-color: #478f7c;
+}
+
+html.sap-desktop .sapMToken:hover {
+    border: 0.0625rem solid #478f7c;
+    background: #dbeae5;
+    border-radius: 0.25rem;
+}
+
+.sapMTokenIcon {
+    color: #478f7c;
+}
+
+.sapUiHLayoutChildWrapper .sapMBtnInner {
+    background-color: #478f7c;
+    color: #fff;
+    border-color: #478f7c;
+}
+
+.sapMBtn:hover>.sapMBtnHoverable {
+    background-image: none;
+    background-color: #3a7566;
+    border-color: #3a7566;
+}
+
+.sapMTB-Transparent-CTX .sapMBtnInner:not(.sapMToggleBtnPressed):not(.sapMBtnEmphasized):not(.sapMBtnAccept):not(.sapMBtnReject):not(.sapMBtnActive):not(.sapMBtnGhost) {
+    border-color: #fff;
+}
+
+:not(.sapMBtnDisabled) .sapMBtnBack>.sapMBtnIcon,
+:not(.sapMBtnDisabled) .sapMBtnTransparent>.sapMBtnIcon,
+:not(.sapMBtnDisabled) .sapMBtnGhost>.sapMBtnIcon {
+    color: #fff;
+}
+
+.sapMBtnIcon {
+    color: #fff;
+}
+
+.sapMMsgPopoverCloseBtn .sapMBtnIcon {
+    color: #fff;
+}
+
+.sapUiRespGrid .sapMBtnInner {
+    background-color: #478f7c;
+    color: #fff;
+    border-color: #478f7c;
+}
+
+.sapMSelectListItemBase.sapMSelectListItemBasePressed,
+.sapMSelectListItemBase.sapMSelectListItemBasePressed.sapMSelectListItemBaseSelected {
+    background-color: #478f7c;
+}
+
+.sapMSltHoverable:not(.sapMSltState):not(.sapMSltIconOnly):hover {
+    border-color: #478f7c;
+}
+
+.sapMSegBBtn.sapMSegBBtnSel .sapMSegBBtnInner {
+    background: #3a7566;
+    color: #3a7566;
+    border-color: #3a7566;
+}
+
+.sapMSegB .sapMSegBBtn .sapMSegBBtnInner {
+    color: #3a7566;
+    border-top: 1px solid #3a7566;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #3a7566;
+    border-left: 1px solid #3a7566;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #3a7566;
+    border-bottom: 1px solid #3a7566;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #3a7566;
+    border-right: 1px solid transparent;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: transparent;
+    background-color: #fff;
+}
+
+.sapMSegBBtn.sapMSegBBtnSel:hover .sapMSegBBtnInner {
+    border-color: #478f7c;
+}
+
+.sapMSegBBtn.sapMSegBBtnFocusable.sapMSegBBtnSel .sapMSegBBtnInner:hover {
+    border-right: 1px solid #478f7c;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #478f7c;
+}
+
+.sapMLIB.sapMLIBActive {
+    color: #ffffff;
+    background: #3a7566;
+    background-color: #3a7566;
+}
+
+html.sap-desktop .sapMSegBBtn.sapMSegBBtnFocusable.sapMSegBBtnSel:hover .sapMSegBBtnInner,
+html.sap-desktop .sapMSegBBtnFocusable.sapMBtnActive:hover .sapMSegBBtnInner {
+    background: #478f7c;
+}
+
+.sapMSegBBtn.sapMSegBBtnFocusable.sapMSegBBtnSel .sapMSegBBtnInner {
+    border-right: 1px solid #478f7c;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #478f7c;
+}
+
+span.sapMBtnInner.sapMBtnEmphasized {
+    background-color: #478f7c;
+    border-color: #478f7c;
+}
+
+html.sap-desktop .sapMToggleBtnPressed,
+.sapMToggleBtnPressed:not(.sapMBtnDisabled),
+html.sap-desktop .sapMIBar-CTX .sapMToggleBtnPressed,
+.sapMIBar-CTX .sapMToggleBtnPressed:not(.sapMBtnDisabled),
+html.sap-desktop .sapMTB-Transparent-CTX .sapMBtnInner.sapMToggleBtnPressed,
+.sapMTB-Transparent-CTX .sapMBtnInner.sapMToggleBtnPressed:not(.sapMBtnDisabled) {
+    background-color: #3a7566;
+    border-color: #3a7566;
+}
+
+.sapMLnk {
+    color: #3a7566;
+}
+
+.sapMLnk:active:not(.sapMLnkDsbl),
+.sapMLnk:focus:not(.sapMLnkDsbl) {
+    color: #3a7566;
+}
+
+.sapMLnk:hover:not(.sapMLnkDsbl) {
+    color: #3a7566;
+}
+
+.customLinkStyle {
+    width: 100%;
+    text-align: center;
+}
+
+.sapUiCalendarApp.sapUiCalendarAppSel,
+.sapUiCalendarApp:active,
+.sapUiCalendarApp.sapUiCalendarAppSel:active {
+    color: #ffffff;
+    background-color: #3a7566;
+}
+
+.sapMSltPressed>.sapMSltArrow {
+    background: #3a7566;
+    background-color: #3a7566;
+}
+
+.sapMBtn:hover>.sapMBtnHoverable.sapMBtnEmphasized:not(.sapMBtnActive):not(.sapMToggleBtnPressed) {
+    background-color: #3a7566;
+    border-color: #3a7566;
+    color: #ffffff;
+}
+
+.sapMBtn:hover>.sapMBtnHoverable.sapMToggleBtnPressed:not(.sapMBtnActive),
+.sapMBtn .sapMBtnHoverable.sapMToggleBtnPressed:hover {
+    background-color: #3a7566;
+    border-color: #3a7566;
+    color: #ffffff;
+    text-shadow: none;
+}
+
+.sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable:not(.sapMBtnActive):not(.sapMToggleBtnPressed),
+.sapMIBar-CTX .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable:not(.sapMBtnActive):not(.sapMToggleBtnPressed) {
+    background-color: #3a7566;
+    border-color: #3a7566;
+    color: #ffffff;
+}
+
+.sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable:not(.sapMBtnActive):not(.sapMToggleBtnPressed) bdi,
+.sapMIBar-CTX .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable:not(.sapMBtnActive):not(.sapMToggleBtnPressed) bdi {
+    color: #ffffff;
+}
+
+.sapMBtnInner {
+    /*color: #3a7566;*/
+    color: #fff;
+}
+
+.sapMBtnInnerCustom .sapMBtnInner {
+    background-color: #478f7c;
+    color: #fff;
+    border-color: #478f7c;
+}
+
+.sapMBtnInnerCustom .sapMBtnInner.sapMBtnHoverable:hover {
+    background-color: #3a7566;
+    border-color: #366d5e;
+    color: #fff;
+}
+
+.sapMBtnInner.sapMBtnHoverable:hover {
+    background-color: #3a7566;
+    border-color: #366d5e;
+    color: #ffff;
+}
+
+.sapMBtnInner.sapMBtnHoverable:hover {
+    background-color: #3a7566;
+    border-color: #366d5e;
+}
+
+.sapMIBar-CTX.sapMFooter-CTX:not(.sapMBtnDisabled)>.sapMBtnActive {
+    background-color: #478f7c;
+    color: #ffffff;
+    text-shadow: none;
+}
+
+
+/*Hover button*/
+
+
+/*.sapMBtn:hover>.sapMBtnHoverable {
+    background-image: none;
+    background-color: black;
+    border-color: #0854a0;
+}*/
+
+.sapMITBSelected .sapMITBFilterDefault {
+    background: #478f7c !important;
+    color: #ffffff;
+}
+
+.sapMInputBaseIcon:active {
+    background-color: #478f7c;
+}
+
+.sapMIBar-CTX .sapMBtn:hover>.sapMBtnHoverable:not(.sapMBtnActive) {
+    background-color: #3a7566;
+    color: #ffff;
+}
+
+.sapMBarChild .sapMIBar-CTX .sapMBtn:hover>.sapMBtnHoverable:not(.sapMBtnActive) {
+    color: #ffff;
+}
+
+.sapMIBar-CTX .sapMBtn:hover>.sapMBtnHoverable:not(.sapMBtnActive) {
+    background-color: #3a7566;
+    color: #ffff;
+}
+
+.sapMITBFilterIcon {
+    border-color: #ffffff;
+}
+
+:not(.sapMBtnDisabled)>span.sapMBtnInner.sapMBtnIconFirst.sapMBtnTransparent.sapMBtnActive,
+:not(.sapMBtnDisabled)>span.sapMBtnInner.sapMBtnIconLast.sapMBtnTransparent.sapMBtnActive {
+    background-color: #478f7c;
+    border-color: #478f7c;
+    border-top-color: #478f7c;
+    border-right-color: #478f7c;
+    border-bottom-color: #478f7c;
+    border-left-color: #478f7c;
+}
+
+.sapMDialog>header.sapMDialogTitle .sapMTitle {
+    color: #fff;
+}
+
+
+/*.sapMIBar-CTX.sapMFooter-CTX:not(.sapMBtnDisabled)>.sapMBtnActive {
+    background-color: #478f7c !important;
+}
+
+.sapMIBar-CTX.sapMHeader-CTX:not(.sapMBtnDisabled)>.sapMBtnActive,
+.sapMIBar-CTX.sapMFooter-CTX:not(.sapMBtnDisabled)>.sapMBtnActive {
+    background-color: #478f7c !important;
+}*/
+
+.sapMITBSelected>.sapMITBContentArrow::after {
+    color: #478f7c !important;
+}
+
+.sapMPanelExpandableIcon {
+    color: #478f7c !important;
+}
+
+.sapMITBFilterDefault .sapMITBFilterDefaultCustom {
+    color: #478f7c !important;
+}
+
+.sapMITBSelected>.sapMITBContentArrow::after {
+    background: #478f7c;
+}
+
+.sapMITBFilterDefault {
+    color: #478f7c;
+}
+
+:not(.sapMBtnDisabled)>.sapMBtnBack.sapMBtnActive,
+:not(.sapMBtnDisabled):hover>.sapMBtnBack.sapMBtnActive,
+:not(.sapMBtnDisabled)>.sapMBtnTransparent.sapMBtnActive,
+:not(.sapMBtnDisabled):hover>.sapMBtnTransparent.sapMBtnActive,
+:not(.sapMBtnDisabled)>.sapMBtnGhost.sapMBtnActive,
+:not(.sapMBtnDisabled):hover>.sapMBtnGhost.sapMBtnActive {
+    background-color: #3a7566;
+    border-color: #3a7566;
+    ;
+}
+
+
+/*.sapMIBar-CTX.sapMHeader-CTX:not(.sapMBtnDisable)>.sapMBtnActive,
+.sapMIBar-CTX.sapMFooter-CTX:not(.sapMBtnDisable)>.sapMBtnActive {
+    background-color: #3a7566;
+}*/
+
+.sapMIBar-CTX .sapMBtn:not(.sapMBtnDisabled):hover>.sapMBtnInner:not(.sapMToggleBtnPressed):not(.sapMBtnEmphasized):not(.sapMBtnAccept):not(.sapMBtnReject):not(.sapMBtnActive):not(.sapMBtnGhost),
+.sapMTB-Transparent-CTX .sapMBtn:not(.sapMBtnDisabled):hover>.sapMBtnInner:not(.sapMToggleBtnPressed):not(.sapMBtnEmphasized):not(.sapMBtnAccept):not(.sapMBtnReject):not(.sapMBtnActive):not(.sapMBtnGhost) {
+    border-color: #3a7566;
+}
+
+:focus>[class*='sapM'] {
+    /*.sapMBtn:hover>.sapMBtnHoverable {
+    /* background-image: none; */
+}
+
+
+/*.sapMBtnInner.sapMBtnHoverable:hover {
+    background-color: #3a7566;
+    border-color: #366d5e;
+}
+.sapMBtnInner.sapMBtnHoverable {
+    background-color: #478f7c !important;
+    border-color: #366d5e;
+}*/
+
+.sapUiCalItem.sapUiCalItemSel:not(.sapUiCalItemSelBetween),
+.sapUiCalItemSel:not(.sapUiCalItemSelBetween)>.sapUiCalItemText {
+    background-color: #478f7c !important;
+    border-radius: 0.25rem;
+}
+
+.sapMInputBaseIconPressed .sapMInputBaseIcon,
+html.sap-desktop .sapMInputBaseIconPressed .sapMInputBaseIcon:hover {
+    background: #478f7c !important;
+}
+
+.sapMBtn:hover:not(.sapMBtnDisabled)>.sapMBtnHoverable.sapMBtnTransparent:not(.sapMBtnActive):not(.sapMToggleBtnPressed)>.sapMBtnIcon,
+*.sapMBtn:hover:not(.sapMBtnDisabled)>span.sapMBtnInner.sapMBtnTransparent:not(.sapMBtnActive):not(.sapMToggleBtnPressed)>.sapMBtnIcon,
+:not(.sapMBtnDisabled):not(.sapMSBActive)>span.sapMBtnInner.sapMBtnTransparent:not(.sapMBtnActive):not(.sapMToggleBtnPressed):hover>.sapMBtnIcon {
+    color: #fff;
+}

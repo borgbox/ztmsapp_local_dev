@@ -1,0 +1,97 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:ifx="com.infineon.ztmsapp.custom" xmlns:core="sap.ui.core" controllerName="com.infineon.ztmsapp.controller.MyAttendance"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:u="sap.ui.unified" width="100%">
+	<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+		<l:HorizontalLayout class="sapUiNoContentPadding">
+			<l:VerticalLayout class="sapUiContentPadding" width="100%">
+				<Label text="{i18n>empview_attendance_fromdate}"/>
+				<DatePicker id="fromdate" placeholder="Enter Date ..."
+					value="{ path: 'filterval>/fromdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }" change="validateDates"
+					class="sapUiSmallMarginBottom"/>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiContentPadding" width="100%">
+				<Label text="{i18n>empview_attendance_todate}"/>
+				<DatePicker id="todate" placeholder="Enter Date ..." change="validateDates" class="sapUiSmallMarginBottom"
+					value="{ path: 'filterval>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiContentPadding" width="100%">
+				<Button text="Go" width="10em" press="searchMyAttendace($event,${Employee},${Role})"></Button>
+				<Button text="{i18n>reset_btn}" width="10em" press=".resetMyAttendanceFilter"/>
+			</l:VerticalLayout>
+		</l:HorizontalLayout>
+		<Table id="idMyAttendance" inset="false" visible="false" items="{ path: 'myAttendance>/results' }" growingScrollToLoad="true" growing="true"
+			sticky="ColumnHeaders">
+			<headerToolbar>
+				<OverflowToolbar>
+					<Title text="{i18n>Attendance} ({myAttendance>/results/length})" level="H2"/>
+					<ToolbarSpacer></ToolbarSpacer>
+					<Button enabled="{= ${myAttendance>/results/length} > 0}" tooltip="{i18n>total_approved_pending}" icon="sap-icon://filter-analytics"
+						press="showMyAttendanceTotals"/>
+					<Button icon="sap-icon://download" tooltip="{i18n>download_pdf}" enabled="{= ${myAttendance>/results/length} > 0}"
+						press="onExportPDFMyAttendance(${Employee},${Role})"/>
+					<Button icon="sap-icon://excel-attachment" tooltip="{i18n>download_spreadsheet}" enabled="{= ${myAttendance>/results/length} > 0}"
+						press="onExportXLSMyAttendance(${Employee},${Role})"/>
+					<Button icon="sap-icon://refresh" press="searchMyAttendace($event,${Employee},${Role})"/>
+				</OverflowToolbar>
+			</headerToolbar>
+			<columns>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_date}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_supervisor}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_shift}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_clockin}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_clockout}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_planhours}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_schedulehours}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>actworkhours}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_actualothours}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_status}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>empview_attendance_leaveduration}"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{ path: 'myAttendance>Day', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+						<Text text="{myAttendance>Supervisor}"/>
+						<Text text="{myAttendance>Shift}"/>
+						<Text text="{ parts: [{path: 'myAttendance>Clockin'},{path: 'myAttendance>ClockinFilled'}], formatter: '.formatTime'}"/>
+						<Text text="{ parts: [{path: 'myAttendance>Clockout'},{path: 'myAttendance>ClockoutFilled'}], formatter: '.formatTime'}"/>
+						<Text
+							text="{ path: 'myAttendance>Planhours', type: 'sap.ui.model.type.Float', formatOptions: { minIntegerDigits: 0, maxIntegerDigits: 3, minFractionDigits: 0, maxFractionDigits: 2 } }"/>
+						<!--						<Text
+							text="{ path: 'myAttendance>Schdlhours', formatter: '.formatInt' }"/>
+						<Text
+							text="{ path: 'myAttendance>Acthours', formatter: '.formatInt' }"/>-->
+						<Text text="{ path: 'myAttendance>Planothours', formatter: '.formatInt' }"/>
+						<Text text="{ path: 'myAttendance>Actworkhours' }"/>
+						<Text text="{ path: 'myAttendance>Actothours', formatter: '.formatInt' }"/>
+						<Text text="{myAttendance>Status}"/>
+						<Text
+							text="{ path: 'myAttendance>Leaveduration', type: 'sap.ui.model.type.Float', formatOptions: { minIntegerDigits: 0, maxIntegerDigits: 3, minFractionDigits: 0, maxFractionDigits: 2 } }"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</l:VerticalLayout>
+</mvc:View>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema Namespace="ZHR_TMS_CORE_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="EmployeeCalendar" sap:content-version="1">
+				<Key><PropertyRef Name="Pernr"/><PropertyRef Name="Date"/></Key><Property Name="BookedLeave" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Booked Leave" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PreOtReq" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Pre OT Request" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Pernr" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Personnel no." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PlannedLeave" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Planned Leave" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Date" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ChangeShift" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Shift Changed" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Shift" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Daily WS" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PublicHoliday" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Public Holiday" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="HalfLeave" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Half Leave" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PotentialViolation" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Potential Violation"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="RestDay" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Rest Day" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="TeamCalendar" sap:content-version="1">
+				<Key><PropertyRef Name="Pernr"/><PropertyRef Name="Date"/></Key><Property Name="Role" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Role" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Pernr" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Personnel no." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Uname" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="User Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Date" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Shift" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Daily WS" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PublicHoliday" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Public Holiday" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="HalfLeave" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Half Leave" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PotentialViolation" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Potential Violation"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PreOtReq" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Pre OT Rrequested" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="RestDay" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Rest Day" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="BookedLeave" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Booked Leave" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PlannedLeave" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Planned Leave" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ChangeShift" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Shift Changed" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Fullname" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Empl./Appl.Name"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Employeeid" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Person ID"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Shiftgroup" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="WS rule" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Orgunitid" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Org. Unit" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Orgunittext" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Costcenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Cost Center"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="CoveringOfficer" sap:content-version="1">
+				<Key><PropertyRef Name="Person"/><PropertyRef Name="Begda"/><PropertyRef Name="Endda"/></Key><Property Name="Person" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Personnel no." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Begda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Start Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Endda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="End Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="CovrngOfc" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Covering Officer"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Reason" Type="Edm.String" Nullable="false" MaxLength="1024" sap:unicode="false" sap:label="Reason" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Changed by"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ChangedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:unicode="false" sap:label="Changed at"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="EmployeeData" sap:content-version="1">
+				<Key><PropertyRef Name="Employee"/><PropertyRef Name="Role"/></Key><Property Name="Employee" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Personnel Number"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Fullname" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Employeeid" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Person ID"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Shiftgroup" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Shift Group"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Orgunitid" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Org Unit" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Orgunittext" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Org Unit Description"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Costcenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Cost Center"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Role" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Role" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/><Property Name="SearchStr" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="SearchStr"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false"/></EntityType>
+			<EntityContainer Name="ZHR_TMS_CORE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"><EntitySet Name="EmployeeCalendarSet" EntityType="ZHR_TMS_CORE_SRV.EmployeeCalendar" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/><EntitySet Name="TeamCalendarSet" EntityType="ZHR_TMS_CORE_SRV.TeamCalendar" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/><EntitySet Name="CoveringOfficerSet" EntityType="ZHR_TMS_CORE_SRV.CoveringOfficer" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/><EntitySet Name="EmployeeDataSet" EntityType="ZHR_TMS_CORE_SRV.EmployeeData" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/></EntityContainer><atom:link rel="self"
+				href="https://webidecp-a258e6505.dispatcher.hana.ondemand.com/destinations/SAPDPS410/sap/opu/odata/sap/ZHR_TMS_CORE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/><atom:link rel="latest-version"
+				href="https://webidecp-a258e6505.dispatcher.hana.ondemand.com/destinations/SAPDPS410/sap/opu/odata/sap/ZHR_TMS_CORE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/></Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

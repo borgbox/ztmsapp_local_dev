@@ -1,0 +1,248 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" height="100%" width="100%" controllerName="com.infineon.ztmsapp.controller.SupportView"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page showNavButton="true" navButtonPress="onNavBackToMain" title="{i18n>support_tools}" busy="{appView>/busy}">
+				<content>
+					<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" showTitleInHeaderContent="true" useIconTabBar="true"
+						useTwoColumnsForLargeScreen="true" alwaysShowContentHeader="true" upperCaseAnchorBar="false">
+						<uxap:headerTitle>
+							<uxap:ObjectPageHeader id="ObjectPageHeader" isObjectIconAlwaysVisible="false" isObjectTitleAlwaysVisible="false"
+								isObjectSubtitleAlwaysVisible="false" isActionAreaAlwaysVisible="false" objectTitle="{Fullname}" objectImageShape="Circle"
+								objectImageDensityAware="false" showPlaceholder="false"/>
+						</uxap:headerTitle>
+						<uxap:headerContent width="90%"></uxap:headerContent>
+						<uxap:ObjectPageSection showTitle="false" visible="true" titleUppercase="false">
+							<uxap:ObjectPageSubSection title="{i18n>application_config}" titleUppercase="false">
+								<Table id="idParametersTable" inset="false" items="{ path: '/TMSParametersSet' }" updateFinished="onUpdateFinishedCoOfficer"
+									growingScrollToLoad="true" growing="true" sticky="ColumnHeaders">
+									<headerToolbar>
+										<OverflowToolbar id="otbSubheader">
+											<Title text="{i18n>supportview_parameters}" level="H2"/>
+											<ToolbarSpacer/>
+											<Button id="editButton" enabled="{= ${parametersCount>/length} > 0}" text="{i18n>generic_edit}" icon="sap-icon://edit" type="Transparent"
+												press="onEdit"/>
+											<Button id="cancelButton" text="{i18n>generic_display}" type="Transparent" press="onCancel" visible="false"/>
+											<Button id="addButton" text="{i18n>generic_add}" icon="sap-icon://add" type="Transparent" press="onAdd"/>
+											<Button id="saveButton" enabled="{= ${parametersCount>/length} > 0}" text="{i18n>generic_save}" type="Transparent" press="onSave"
+												visible="false"/>
+											<Button icon="sap-icon://message-popup" text="{messages/messagesLength}" visible="false" type="Emphasized" press="handleMessagePopoverPress"/>
+											<Button icon="sap-icon://refresh" press=".refreshParametersTable"/>
+										</OverflowToolbar>
+									</headerToolbar>
+									<columns>
+										<Column width="12em">
+											<Text text="{i18n>supportview_cfgkey1}"/>
+										</Column>
+										<Column width="12em">
+											<Text text="{i18n>supportview_cfgkey2}"/>
+										</Column>
+										<Column width="20em">
+											<Text text="{i18n>supportview_cfgvalue}"/>
+										</Column>
+										<Column width="30em">
+											<Text text="{i18n>supportview_comment}"/>
+										</Column>
+										<Column width="12em">
+											<Text text="{i18n>supportview_businessapp}"/>
+										</Column>
+										<Column width="6em">
+											<Text text="{i18n>supportview_businessrule}"/>
+										</Column>
+										<Column width="6em">
+											<Text text="{i18n>label_status}"/>
+										</Column>
+										<Column width="4em">
+											<Text text=""/>
+										</Column>
+									</columns>
+									<items>
+										<ColumnListItem>
+											<cells>
+												<Text text="{Cfgkey1}"/>
+												<Text text="{Cfgkey2}"/>
+												<Text text="{Cfgvalue}"/>
+												<Text text="{Cfgcomment}"/>
+												<Text text="{BusinessApp}"/>
+												<Text text="{BusinessRule}"/>
+												<Text text=""/>
+											</cells>
+										</ColumnListItem>
+									</items>
+								</Table>
+							</uxap:ObjectPageSubSection>
+						</uxap:ObjectPageSection>
+						<uxap:ObjectPageSection showTitle="false" visible="true" titleUppercase="false">
+							<uxap:ObjectPageSubSection title="{i18n>preot_data}" titleUppercase="false">
+								<VBox class="sapUiNoContentPadding">
+									<HBox class="sapUiNoContentPadding">
+										<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+											<Label text="{i18n>empview_attendance_fromdate}"/>
+											<DatePicker id="fromdate" placeholder="Enter Date ..."
+												value="{ path: 'filterPreOT>/fromdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"
+												change="validateDates" class="sapUiSmallMarginBottom"/>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding sapUiSmallMarginBegin" width="100%">
+											<Label text="{i18n>empview_attendance_todate}"/>
+											<DatePicker id="todate" placeholder="Enter Date ..." change="validateDates" class="sapUiSmallMarginBottom"
+												value="{ path: 'filterPreOT>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiMediumMarginBegin" width="100%">
+											<Label text="{i18n>label_employeeid}"/>
+											<HBox>
+												<MultiInput id="mipEmployee" type="Text" placeholder="" showSuggestion="false" showValueHelp="true" startSuggestion="2"
+													tokenUpdate="onUpdateTokeEmployee($event)" liveChange=".onInputEmployee($event)" valueHelpRequest="onValueEmployeeSearchHelp($event,false)"
+													value="{ path: 'teamfilterval>/employeeid' }"
+													suggestionItems="{ path: '/EmployeeDataSet', sorter: { path: 'Employee' }, parameters: {select: 'Employee,Fullname', operationMode: 'Client' } }"
+													suggestionItemSelected="suggestionSelected($event,${teamfilterval>/param})">
+													<suggestionItems>
+														<core:ListItem key="{Employee}" text="{Fullname} ({Employee})"/>
+													</suggestionItems>
+												</MultiInput>
+												<Button class="sapMBtnInnerCustom sapUiTinyMarginBegin" icon="sap-icon://upload" tooltip="{i18n>upload_employee}"
+													press="onOpenEmployeeRange"></Button>
+											</HBox>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding sapUiSmallMarginBegin" width="100%">
+											<Label text="{i18n>request_type}"/>
+											<MultiComboBox id="mcbReqType" items="{ path: '/ZhrTmsReqTypeSet', sorter: { path: 'ReqType' } }">
+												<core:Item key="{ReqType}" text="{Description}"/>
+											</MultiComboBox>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding sapUiSmallMarginBegin" width="100%">
+											<Label text=""/>
+											<Button class="sapMBtnInnerCustom sapUiSmallMarginBegin" text="Go" press="onSearch"></Button>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+											<Label text=""/>
+											<Button text="{i18n>reset_btn}" class="sapMBtnInnerCustom sapUiSmallMarginBegin" press="reset"/>
+										</l:VerticalLayout>
+									</HBox>
+									<ScrollContainer>
+										<Table id="idPreOTTable" items="{ path: 'preOT>/results'}" growingScrollToLoad="true" sticky="ColumnHeaders,HeaderToolbar" visible="false">
+											<headerToolbar>
+												<OverflowToolbar>
+													<Title text="{i18n>pre_ot_requests} ({preOT>/results/length})" level="H2"/>
+													<ToolbarSpacer/>
+													<Button id="btnEditPreOT" text="Edit" type="Transparent" press="onEditPreOTTable" enabled="{= ${preOT>/results/length} > 0}"/>
+													<Button id="bntSavePreOT" text="Save" type="Transparent" press="onSavePreOT" visible="false" enabled="{= ${preOT>/results/length} > 0}"/>
+													<Button id="btnCancelPreOT" text="Cancel" type="Transparent" press="onCancelPreOT" visible="false"
+														enabled="{= ${preOT>/results/length} > 0}"/>
+												</OverflowToolbar>
+											</headerToolbar>
+											<columns>
+												<Column width="6.5em"><Text text="{i18n>empview_newreqdialog_date}"/></Column>
+												<Column minScreenWidth="Tablet" width="7em"><Text text="{i18n>mgrview_otapproval_employee}"/></Column>
+												<Column minScreenWidth="Tablet" width="7em"><Text text="{i18n>mgrview_otapproval_empname}"/></Column>
+												<Column minScreenWidth="Tablet" width="5em"><Text text="{i18n>request_type}"/></Column>
+												<Column width="4em"><Text text="{i18n>mgrview_otapproval_othours}"/></Column>
+												<Column width="6em"><Text text="{i18n>mgrview_otapproval_adjothours}"/></Column>
+												<Column width="6em"><Text text="{i18n>mgrview_preot_ActHours}"/></Column>
+												<Column width="6em"><Text text="{i18n>mgrview_preot_ActHoursWBuf}"/></Column>
+												<Column width="6em"><Text text="{i18n>mgrview_preot_TotalHours}"/></Column>
+												<Column width="5em"><Text text="{i18n>mgrview_preot_EntitledOt}"/></Column>
+												<Column width="6em"><Text text="{i18n>mgrview_preot_ShiftGroup}"/></Column>
+												<Column width="4em"><Text text="{i18n>mgrview_preot_Shift}"/></Column>
+												<Column width="5em"><Text text="{i18n>mgrview_preot_AdjShift}"/></Column>
+												<Column width="7em"><Text text="{i18n>mgrview_preot_Curstatus}"/></Column>
+												<Column width="7em"><Text text="{i18n>mgrview_preot_Remarks}"/></Column>
+												<Column width="5em"><Text text="{i18n>mgrview_preot_ActClockin}"/></Column>
+												<Column width="5em"><Text text="{i18n>mgrview_preot_ActClockout}"/></Column>
+												<Column width="9em"><Text text="{i18n>mgrview_preot_AdjClockin}"/></Column>
+												<Column width="9em"><Text text="{i18n>mgrview_preot_AdjClockout}"/></Column>
+												<Column width="8em"><Text text="{i18n>mgrview_preot_ProcStatus}"/></Column>
+												<Column width="4em"><Text text=" "/></Column>
+											</columns>
+											<items>
+												<ColumnListItem>
+													<cells>
+														<Text text="{ path: 'preOT>Reqdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+														<Text text="{preOT>Person}"/>
+														<Text text="{preOT>EmployeeDataSet/Fullname}"/>
+														<Text text="{preOT>ReqType}"/>
+														<Text text="{preOT>OtHours}"/>
+														<Text text="{preOT>OtHoursAdj}"/>
+														<Text text="{preOT>ActHours}"/>
+														<Text text="{preOT>ActHoursWBuf}"/>
+														<Text text="{preOT>TotalHours}"/>
+														<Text text="{preOT>EntitledOt}"/>
+														<Text text="{preOT>ShiftGroup}"/>
+														<Text text="{preOT>Shift}"/>
+														<Text text="{preOT>AdjShift}"/>
+														<Text text="{preOT>Curstatus}"/>
+														<Text text="{preOT>Remarks}"/>
+														<Text text="{ parts: [{path: 'preOT>ActClockin'},{path: 'preOT>ActClockinFilled'}], formatter: '.formatTime'}"/>
+														<Text text="{ parts: [{path: 'preOT>ActClockout'},{path: 'preOT>ActClockoutFilled'}], formatter: '.formatTime'}"/>
+														<Text text="{ parts: [{path: 'preOT>AdjClockin'},{path: 'preOT>AdjClockinFilled'}], formatter: '.formatTime'}"/>
+														<Text text="{ parts: [{path: 'preOT>AdjClockout'},{path: 'preOT>AdjClockoutFilled'}], formatter: '.formatTime'}"/>
+														<Text text="{preOT>ProcStatus}"/>
+													</cells>
+												</ColumnListItem>
+											</items>
+										</Table>
+									</ScrollContainer>
+								</VBox>
+							</uxap:ObjectPageSubSection>
+						</uxap:ObjectPageSection>
+						<uxap:ObjectPageSection showTitle="false" visible="true" titleUppercase="false">
+							<uxap:ObjectPageSubSection title="{i18n>tms_logs}" titleUppercase="false">
+								<VBox class="sapUiNoContentPadding">
+									<HBox class="sapUiNoContentPadding">
+										<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+											<Label text="{i18n>empview_attendance_fromdate}"/>
+											<DatePicker placeholder="Enter Date ..."
+												value="{ path: 'filterLog>/fromdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }" change="validateDates"
+												class="sapUiSmallMarginBottom"/>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding sapUiSmallMarginBegin">
+											<Label text="{i18n>empview_attendance_todate}"/>
+											<DatePicker placeholder="Enter Date ..." change="validateDates" class="sapUiSmallMarginBottom"
+												value="{ path: 'filterLog>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding sapUiSmallMarginBegin">
+											<Label text="{i18n>severity}"/>
+											<MultiComboBox id="mcbSeverity">
+												<core:Item key="E" text="{i18n>error}"/>
+												<core:Item key="W" text="{i18n>warning}"/>
+												<core:Item key="S" text="{i18n>success}"/>
+											</MultiComboBox>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding sapUiSmallMarginBegin">
+											<Label text="{i18n>subobject}"/>
+											<MultiComboBox id="mcbSubobject">
+												<core:Item key="CHGSHFT" text="{i18n>change_shift}"/>
+												<core:Item key="COVOFF" text="{i18n>covering_officer_screens}"/>
+												<core:Item key="OTAPPR" text="{i18n>ot_approval}"/>
+												<core:Item key="OTHERS" text="{i18n>others}"/>
+												<core:Item key="PREOT" text="{i18n>pre_ot_table}"/>
+												<core:Item key="PUBHOL" text="{i18n>public_holiday}"/>
+												<core:Item key="TEVAL" text="{i18n>time_evaluation}"/>
+												<core:Item key="TMCORR" text="{i18n>time_correction}"/>
+												<core:Item key="TIMVIOL" text="{i18n>time_violation}"/>
+												
+											</MultiComboBox>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding sapUiSmallMarginBegin">
+											<Label text="" class="sapUiSmallMarginBegin"/>
+											<Button class="sapMBtnInnerCustom sapUiSmallMarginBegin" text="Go" press="onSearchLog"></Button>
+										</l:VerticalLayout>
+										<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+											<Label text=""/>
+											<Button text="{i18n>reset_btn}" class="sapMBtnInnerCustom sapUiSmallMarginBegin" press="resetLogFilter"/>
+										</l:VerticalLayout>
+									</HBox>
+									<List items="{ path: 'tmsLogs>/results' }">
+										<StandardListItem  title="{tmsLogs>Subobject} {tmsLogs>Aldate} {tmsLogs>Altime} {tmsLogs>Aluser}"
+										description="{tmsLogs>Msgv1}{tmsLogs>Msgv2}{tmsLogs>Msgv3}{tmsLogs>Msgv4}"
+										info="{tmsLogs>Msgtytxt}" infoState="{tmsLogs>Msgty}"/>
+									</List>
+								</VBox>
+							</uxap:ObjectPageSubSection>
+						</uxap:ObjectPageSection>
+					</uxap:ObjectPageLayout>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

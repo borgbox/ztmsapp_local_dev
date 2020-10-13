@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<Dialog title="{i18n>empview_newreqdialog_title}" contentWidth="550px">
+		<content>
+			<f:SimpleForm editable="true" layout="GridLayout" labelSpanXL="2" labelSpanL="2" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false"
+				emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false"
+				width="500px">
+				<f:content>
+					<Label text="{i18n>empview_newreqdialog_date}"/><Text text="{newrequest>/selected_date}"/>
+					<Label required="true" text="{i18n>empview_newreqdialog_othours}" visible="{newrequest>/preotenabled}"/>
+					<Select id="othours" items="{newrequest>/othours}" visible="{newrequest>/preotenabled}" enabled="true"
+						selectedKey="{newrequest>/selectedOtHour}" change=".validateOption($event,false)">
+						<core:Item key="{newrequest>Key}" text="{newrequest>Value}"/>
+					</Select>
+					<Label text="{i18n>empview_newreqdialog_shift}" visible="{newrequest>/chgshiftenabled}"/>
+					<Select id="shifts" items="{newrequest>/shifts}" visible="{newrequest>/chgshiftenabled}" enabled="{newrequest>/CanChangeShift}"
+						selectedKey="{newrequest>/selectedShift}" change=".validateOption($event,false)">
+						<core:Item key="{newrequest>Key}" text="{newrequest>Value}"/>
+					</Select>
+					<Label required="true" text="{i18n>empview_newreqdialog_reason}"/>
+					<ComboBox id="reasons" items="{/ReasonSet}" selectedKey="{newrequest>/selectedReason}" change=".validateOption($event,true)">
+						<core:Item key="{Key}" text="{Value}"/>
+					</ComboBox>
+					<Label required="true" text="{i18n>empview_newreqdialog_remarks}"/><TextArea id="remarks" maxLength="250" value="{newrequest>/remarks}" rows="8"/>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="{i18n>generic_cancel}" press="closeDialog"/>
+			<Button text="{i18n>generic_submit}" press="saveDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

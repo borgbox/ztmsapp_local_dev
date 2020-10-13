@@ -1,0 +1,34 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<Popover title="{i18n>set_overtime}" class="sapUiContentPadding" placement="Bottom" initialFocus="email">
+		<content>
+			<f:SimpleForm editable="true" layout="GridLayout" labelSpanXL="1" labelSpanL="1" labelSpanM="1" labelSpanS="12" adjustLabelSpan="false"
+				emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"
+				width="450px">
+				<f:content>
+					<VBox fitContainer="true">
+						<Label text="{i18n>available_hour}"/>
+						<FlexBox alignItems="Start" justifyContent="Start">
+							<items>
+								<Select width="100%" items="{teamShift>OtHoursRg}" selectedKey="{teamShift>OtHours}">
+									<core:Item key="{teamShift>key}" text="{teamShift>key} {i18n>hours}"/>
+									<layoutData>
+										<FlexItemData minWidth="90%"/>
+									</layoutData>
+								</Select>
+								<Button class="sapMBtnInnerCustom sapUiSmallMarginEnd" icon="sap-icon://delete" press="resetOtHour"></Button>
+							</items>
+						</FlexBox>
+						<CheckBox selected="{teamShift>IsCallback}" text="{i18n>callback}" select=".selectCallBack"></CheckBox>
+					</VBox>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>generic_save}" press="handleSaveOt"/>
+				<Button text="{i18n>generic_cancel}" press="handleCancel"/>
+			</OverflowToolbar>
+		</footer>
+	</Popover>
+</core:FragmentDefinition>

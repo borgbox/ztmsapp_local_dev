@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:grid="sap.ui.layout.cssgrid">
+	<Dialog title="{i18n>select_date_shuit_mass_update}">
+		<content>
+			<f:SimpleForm editable="true" layout="GridLayout" labelSpanXL="1" labelSpanL="1" labelSpanM="1" labelSpanS="12" adjustLabelSpan="false"
+				emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"
+				width="20em">
+				<f:content>
+					<VBox alignContent="Center" justifyContent="Center" fitContainer="true">
+						<HBox >
+							<l:VerticalLayout>
+								<Label text="{i18n>empview_attendance_fromdate}"/>
+								<DatePicker id="dtFromShift" minDate="{teamfilterval>/fromdateL1}" maxDate="{teamShiftView>/maxToDate}" width="8em"
+									change=".onSelectDateShift(${teamShiftView>/date},$event)"
+									value="{ path: 'teamShiftView>/date', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"></DatePicker>
+							</l:VerticalLayout>
+							<l:VerticalLayout class="sapUiSmallMarginBegin">
+								<Label text="{i18n>empview_attendance_todate}"/>
+								<DatePicker id="dtToShift" minDate="{teamShiftView>/date}" maxDate="{teamShiftView>/maxToDate}" width="8em"
+									change=".onSelectDateShift(${teamShiftView>/todate},$event)"
+									value="{ path: 'teamShiftView>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"></DatePicker>
+							</l:VerticalLayout>
+						</HBox>
+						<l:VerticalLayout >
+							<Label text="{i18n>available_shifts}"/>
+							<Select id="selShift" width="17em" items="{teamShiftOptions>/}" selectedKey="{teamShiftView>/shift}" change=".checkSelectedShift">
+								<core:Item key="{teamShiftOptions>shift}" text="{teamShiftOptions>shift}"/>
+							</Select>
+						</l:VerticalLayout>
+					</VBox>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button class="sapMBtnInnerCustom" text="{i18n>generic_update}" press=".updateSelectedRows"/>
+			<Button class="sapMBtnInnerCustom" text="{i18n>generic_cancel}" press=".closeMassUpdateDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

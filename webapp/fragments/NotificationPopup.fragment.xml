@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<Popover title="" class="sapUiContentPadding" placement="Bottom" showHeader="false">
+		<content>
+			<l:VerticalLayout class="sapUiContentNoPadding" width="100%">
+				<l:content>
+					<List items="{path: 'notification>/NotificationSet', templateShareable : true}">
+						<NotificationListItem title="{notification>title}" visible="{notification>visible}" description="{notification>description}"
+							showCloseButton="false" priority="{notification>priority}" press="onListItemPress(${notification>entity},${notification>role})"></NotificationListItem>
+					</List>
+				</l:content>
+			</l:VerticalLayout>
+		</content>
+		<!--		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>generic_close}" press="handleCloseNotification"/>
+			</OverflowToolbar>
+		</footer>	-->
+	</Popover>
+</core:FragmentDefinition>

@@ -1,0 +1,208 @@
+{
+	"_version": "1.12.0",
+	"sap.app": {
+		"id": "com.infineon.ztmsapp",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {
+			"annotation0": {
+				"type": "ODataAnnotation",
+				"uri": "../annotation0.xml",
+				"settings": {
+					"localUri": "../annotation0.xml"
+				}
+			},
+			"ZHR_TMS_CORE_SRV": {
+				"uri": "http://localhost:8010/proxy",
+				"type": "OData",
+				"settings": {
+					"localUri": "localService/metadata.xml"
+				}
+			}
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponentForManifest",
+			"version": "0.0.0"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"flexEnabled": false,
+		"rootView": {
+			"viewName": "com.infineon.ztmsapp.view.MainView",
+			"type": "XML",
+			"async": true,
+			"id": "MainView"
+		},
+		"dependencies": {
+			"minUI5Version": "1.52.1",
+			"libs": {
+				"sap.m": {},
+				"sap.ui.core": {},
+				"sap.ui.layout": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.infineon.ztmsapp.i18n.i18n"
+				}
+			},
+			"": {
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request",
+					"useBatch": true
+				},
+				"dataSource": "ZHR_TMS_CORE_SRV",
+				"preload": true
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				},
+				{
+					"uri": "css/styleIFXTheme.css"
+				}
+			],
+			"js": [
+				{
+					"uri": "js/underscore-min.js"
+				},
+				{
+					"uri": "js/moment.min.js"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "com.infineon.ztmsapp.view",
+				"controlAggregation": "pages",
+				"controlId": "idAppControl",
+				"clearControlAggregation": false,
+				"bypassed": {
+					"target": [
+						"NotFound"
+					]
+				}
+			},
+			"routes": [
+				{
+					"name": "EmployeeView",
+					"pattern": "EmployeeView",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"EmployeeView"
+					]
+				},
+				{
+					"name": "ManagerView",
+					"pattern": "ManagerView/:tab:/:role:/:dateref:/:employee:",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"ManagerView"
+					]
+				},
+				{
+					"name": "SupportView",
+					"pattern": "SupportView",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"SupportView"
+					]
+				},
+				{
+					"name": "MainView",
+					"pattern": "",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"MainView"
+					]
+				}
+			],
+			"targets": {
+				"EmployeeView": {
+					"viewType": "XML",
+					"transition": "slide",
+					"viewName": "EmployeeView"
+				},
+				"MainView": {
+					"viewType": "XML",
+					"viewName": "MainView"
+				},
+				"ManagerView": {
+					"viewType": "XML",
+					"viewName": "ManagerView"
+				},
+				"SupportView": {
+					"viewType": "XML",
+					"viewName": "SupportView"
+				},
+				"MyAttendance": {
+					"viewType": "XML",
+					"viewName": "MyAttendance"
+				},
+				"TeamShiftCalendar": {
+					"viewType": "XML",
+					"viewName": "TeamShiftCalendar"
+				},
+				"NotAuthorize": {
+					"viewName": "NotAuthorized",
+					"viewId": "NotAuthorized"
+				},
+				"NotAvailable": {
+					"viewName": "NotAvailable",
+					"viewId": "NotAvailable"
+				},
+				"NotFound": {
+					"viewName": "NotFound",
+					"viewId": "NotFound"
+				},
+				"PreOTChangeShiftApproval": {
+					"viewType": "XML",
+					"viewName": "PreOTChangeShiftApproval"
+				}
+			}
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zhr_tms/webapp",
+		"_version": "1.1.0"
+	}
+}

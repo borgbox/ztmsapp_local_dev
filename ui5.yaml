@@ -1,0 +1,44 @@
+specVersion: '1.0'
+metadata:
+  name: ztmsapp
+type: application
+builder:
+  customTasks:
+    - name: webide-extension-task-updateNeoApp
+      afterTask: generateVersionInfo
+      configuration:
+        destDir: dist
+        appFolder: webapp
+        nameSpace: com/infineon
+    - name: webide-extension-task-updateManifestJson
+      afterTask: webide-extension-task-updateNeoApp
+      configuration:
+        appFolder: webapp
+        destDir: dist
+    - name: webide-extension-task-lint
+      afterTask: webide-extension-task-updateManifestJson
+      configuration:
+        destDir: dist
+        appFolder: webapp
+        nameSpace: com/infineon 
+    - name: webide-extension-task-resources
+      afterTask: webide-extension-task-lint
+      configuration:
+        nameSpace: com/infineon
+    - name: ui5-task-nwabap-deployer
+      afterTask: generateVersionInfo
+      configuration: 
+        resources:
+          pattern: "**/*.*"
+        connection:
+          server: http://myserver:8000  
+        authentication:
+          user: myUser
+          password: myPassword
+        ui5:
+          language: EN
+          package: ZZ_UI5_REPO
+          bspContainer: ZZ_UI5_TRACKED
+          bspContainerText: UI5 Upload
+          transportNo: DEVK900000
+          calculateApplicationIndex: true      

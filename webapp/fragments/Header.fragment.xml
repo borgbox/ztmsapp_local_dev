@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:ifx="com.infineon.ztmsapp.custom">
+	<HBox alignContent="SpaceBetween">
+		<ifx:IconNumIndicator id="idIconNotification" visible="{notification>/visible}" busy="{notification>/notificaonbusy}" src="sap-icon://ui-notifications" value="{notification>/totals}" press="onNotifications"></ifx:IconNumIndicator>
+		<core:Icon size="1em" color="#fff" src="sap-icon://lateness/" visible="false" tooltip="{i18n>session_remaining}"/>
+		<Text class="fontWhite sapUiTinyMarginBegin" text="{clockSession>/timer}" visible="true" tooltip="{i18n>session_remaining}"></Text>
+		<core:Icon class="sapUiTinyMarginBegin" size="1em" color="#fff" src="sap-icon://date-time"/>
+		<Text class="fontWhite sapUiTinyMarginBegin" text="{clock>/date}"></Text>
+		<core:Icon class="sapUiTinyMarginBegin" size="1em" color="#fff" src="sap-icon://away"/>
+		<Text class="fontWhite sapUiTinyMarginBegin sapUiLargeMarginEnd" text="{clock>/time}"/>
+		<Text class="fontWhite sapUiLargeMarginBegin" text="{i18n>version} {i18n>version_number}"></Text>
+		<core:Icon class="sapUiTinyMarginBegin" size="1.2em" color="#fff" src="sap-icon://log" press="logoff" tooltip="{i18n>logout}"
+			visible="false"/>
+	</HBox>
+</core:FragmentDefinition>

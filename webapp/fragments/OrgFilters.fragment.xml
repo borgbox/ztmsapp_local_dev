@@ -1,0 +1,75 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<Panel expandable="true" headerText="Filters" width="auto" busy="{ path: 'orgFilter>/filterbusy' }" class="sapUiResponsiveMargin"
+		expanded="{ path: 'orgFilter>/filterexpanded' }">
+		<headerToolbar>
+			<OverflowToolbar>
+				<Title text="{i18n>generic_filters}"></Title>
+				<ToolbarSpacer></ToolbarSpacer>
+				<Button text="{i18n>go_btn}" width="5em" press="search(${orgFilter>/param},$event)" visible="{= !${orgFilter>/filterexpanded} }"/>
+				<Button text="{i18n>reset_btn}" width="5em" press="reset(${orgFilter>/param},true,$event)" visible="{= !${orgFilter>/filterexpanded} }"/>
+			</OverflowToolbar>
+		</headerToolbar>
+		<content>
+			<f:SimpleForm editable="true" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" emptySpanXL="0" emptySpanL="0" emptySpanM="0"
+				emptySpanS="0" columnsXL="3" columnsL="3" columnsM="1" maxContainerCols="3" labelMinWidth="20" adjustLabelSpan="false"
+				layout="ResponsiveGridLayout">
+				<f:content>
+					<Label text="{i18n>empview_attendance_fromdate}" textAlign="Center"/>
+					<DatePicker width="10em" placeholder="{i18n>enter_date}" minDate="{orgFilter>/minDate}"
+						value="{ path: 'orgFilter>/fromdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }" change="validateDates"
+						class="sapUiSmallMarginBottom"/>
+					<Label text="{i18n>empview_attendance_todate}"/>
+					<DatePicker width="10em" placeholder="{i18n>enter_date}"
+						value="{ path: 'orgFilter>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }" change="validateDates"
+						class="sapUiSmallMarginBottom"/>
+					<Label text="{i18n>label_costcenter}"/>
+					<MultiComboBox width="40em" items="{ path: 'intervalsTMS>/CostCenterSet', sorter: { path: 'Value' } }" busy="{intervalsTMS>/busy}" visible="{orgFilter>/display}"
+						selectedKeys="{ path: 'orgFilter>/costcenter' }">
+						<core:Item key="{intervalsTMS>Key}" text="{intervalsTMS>Value}"/>
+					</MultiComboBox>
+					<Label text="{i18n>label_orgunit}"/>
+					<MultiComboBox width="40em" items="{ path: 'intervalsTMS>/OrgUnitSet', sorter: { path: 'Value' } }" visible="{orgFilter>/display}" busy="{intervalsTMS>/busy}"
+						selectedKeys="{ path: 'orgFilter>/orgunit' }">
+						<core:Item key="{intervalsTMS>Key}" text="{intervalsTMS>Value}"/>
+					</MultiComboBox>
+					<Label text="{i18n>label_employeegroup}"/>
+					<MultiComboBox width="40em" items="{ path: 'intervalsTMS>/EmployeeGroupSet', sorter: { path: 'Value' } }" visible="{orgFilter>/display}" busy="{intervalsTMS>/busy}"
+						selectedKeys="{ path: 'orgFilter>/empgroup' }">
+						<core:Item key="{intervalsTMS>Key}" text="{intervalsTMS>Value}"/>
+					</MultiComboBox>
+					<Label text="{i18n>label_shiftgroup}"/>
+					<MultiComboBox width="40em" items="{ path: 'intervalsTMS>/ShiftGroupSet', sorter: { path: 'Value' } }" visible="{orgFilter>/display}" busy="{intervalsTMS>/busy}"
+						selectedKeys="{ path: 'orgFilter>/shiftgroup' }">
+						<core:Item key="{intervalsTMS>Key}" text="{intervalsTMS>Value}"/>
+					</MultiComboBox>
+					<Label text="{i18n>label_status}" visible="{orgFilter>/statusFltVisible}"/>
+					<MultiComboBox width="40em" items="{ path: 'intervalsTMS>/StatusSet', sorter: { path: 'Value' } }" visible="{orgFilter>/statusFltVisible}" busy="{intervalsTMS>/busy}"
+						selectedKeys="{ path: 'orgFilter>/status' }">
+						<core:Item key="{intervalsTMS>Key}" text="{intervalsTMS>Value}"/>
+					</MultiComboBox>
+					<Label text="{i18n>label_employeeid}" visible="{orgFilter>/display}"/>
+					<HBox>
+						<MultiInput id="mipEmployee" type="Text" placeholder="" showSuggestion="false" showValueHelp="true" startSuggestion="2"
+							visible="{orgFilter>/display}" tokenUpdate="onUpdateTokeEmployee($event,${orgFilter>/param})"
+							liveChange=".onInputEmployee($event,${orgFilter>/param})" valueHelpRequest="onValueEmployeeSearchHelp($event,false,${orgFilter>/param})"
+							value="{ path: 'orgFilter>/employeeid' }"
+							suggestionItems="{ path: '/EmployeeDataSet', sorter: { path: 'Employee' }, parameters: {select: 'Employee,Fullname', operationMode: 'Client' } }"
+							suggestionItemSelected="suggestionSelected($event,${orgFilter>/param})">
+							<suggestionItems>
+								<core:ListItem key="{Employee}" text="{Fullname} ({Employee})"/>
+							</suggestionItems>
+						</MultiInput>
+							<Button class="sapMBtnInnerCustom sapUiTinyMarginBegin" visible="{orgFilter>/display}" icon="sap-icon://upload" tooltip="{i18n>upload_employee}"
+								press="onOpenEmployeeRange(${orgFilter>/param},$event)"></Button>
+					</HBox>
+					<core:Title text=""/>
+					<l:VerticalLayout>
+						<Button text="{i18n>go_btn}" width="10em" press="search(${orgFilter>/param},$event)"/>
+						<Button text="{i18n>reset_btn}" width="10em" press="reset(${orgFilter>/param},$event)"/>
+					</l:VerticalLayout>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+	</Panel>
+</core:FragmentDefinition>

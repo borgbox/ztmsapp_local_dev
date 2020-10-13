@@ -1,0 +1,81 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:ifx="com.infineon.ztmsapp.custom" xmlns:core="sap.ui.core" controllerName="com.infineon.ztmsapp.controller.PublicHoliday"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:u="sap.ui.unified" width="100%">
+	<Text></Text>
+	<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+		<l:HorizontalLayout class="sapUiNoContentPadding">
+			<l:VerticalLayout class="sapUiContentPadding" width="100%">
+				<Label text="{i18n>empview_attendance_fromdate}"/>
+				<DatePicker id="fromdate" placeholder="Enter Date ..."
+					value="{ path: 'filtervalPublicHoliday>/fromdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"
+					change="validateDates" class="sapUiSmallMarginBottom"/>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiContentPadding" width="100%">
+				<Label text="{i18n>empview_attendance_todate}"/>
+				<DatePicker id="todate" placeholder="Enter Date ..." change="validateDates" class="sapUiSmallMarginBottom"
+					value="{ path: 'filtervalPublicHoliday>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiContentPadding" width="100%">
+				<Button text="Go" width="10em" press="search($event,${Employee},${Role})"></Button>
+				<Button text="{i18n>reset_btn}" width="10em" press=".resetpublicHolidayFilter"/>
+			</l:VerticalLayout>
+		</l:HorizontalLayout>
+		<Table id="tblPublicHoliday" inset="false" visible="false" items="{ path: 'publicHoliday>/results' }" mode="MultiSelect"
+			growingScrollToLoad="true" growing="true" sticky="ColumnHeaders">
+			<headerToolbar>
+				<OverflowToolbar>
+					<Title text="{i18n>public_holiday} ({publicHoliday>/results/length})" level="H2"/>
+					<ToolbarSpacer></ToolbarSpacer>
+					<Button icon="sap-icon://save" enabled="{= ${publicHoliday>/results/length} > 0}" text="{i18n>generic_save}" press="onPublicHolidaySave"/>
+					<Button icon="sap-icon://refresh" press="search($event,${Employee},${Role})"/>
+				</OverflowToolbar>
+			</headerToolbar>
+			<columns>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_employee}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_empname}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_day}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_weekday}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_daytype}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_shiftgrp}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_shift}"/>
+				</Column>
+				<Column width="11em" hAlign="Center">
+					<Text text="{i18n>mgrview_public_holiday_workingday}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" width="4em" demandPopin="true" hAlign="Center">
+					<Text text=" "/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{publicHoliday>Employee}"/>
+						<Text text="{publicHoliday>EmployeeName}"/>
+						<Text text="{ path: 'publicHoliday>Day', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+						<Text text="{publicHoliday>Weekday}"/>
+						<Text text="{publicHoliday>DayType}"/>
+						<Text text="{publicHoliday>ShiftGroup}"/>
+						<Text text="{publicHoliday>Shift}"/>
+						<CheckBox select=".changeControlForCheckbox($event,'publicHoliday')" enabled="{publicHolidayFeatures>/_update}"
+							selected="{publicHoliday>WorkingDay}"></CheckBox>
+						<core:Icon visible="{= ${publicHoliday>StatusCode} !== '' }" color="{= ${publicHoliday>StatusCode} === 'S' ? '#2B7D2B' : '#BB0000' }"
+							tooltip="{= ${publicHoliday>StatusText}}" src="{= ${publicHoliday>StatusCode} === 'S' ? 'sap-icon://complete' : 'sap-icon://status-error' }"></core:Icon>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</l:VerticalLayout>
+</mvc:View>

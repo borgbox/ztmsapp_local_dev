@@ -1,0 +1,242 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" async="true"
+	xmlns:ifx="com.infineon.ztmsapp.custom" xmlns:core="sap.ui.core" controllerName="com.infineon.ztmsapp.controller.EmployeeView"
+	xmlns:u="sap.ui.unified" width="100%">
+	<Page showNavButton="true" navButtonPress="onNavBack" title="{i18n>employee_data}" busy="{appView>/busy}" id="employeeView">
+		<headerContent>
+			<core:Fragment id="idHeader" fragmentName="com.infineon.ztmsapp.fragments.Header" type="XML"></core:Fragment>
+		</headerContent>
+		<content>
+			<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" showTitleInHeaderContent="true" useIconTabBar="true"
+				useTwoColumnsForLargeScreen="true" alwaysShowContentHeader="true" upperCaseAnchorBar="false" navigate="onChangeTab">
+				<!-- useIconTabBar="true/false": used to define if the sections should be listed and can be scrolled (false) or if one has to select the sections to see the data (true) -->
+				<uxap:headerTitle>
+					<uxap:ObjectPageHeader id="ObjectPageHeader" isObjectIconAlwaysVisible="false" isObjectTitleAlwaysVisible="false"
+						isObjectSubtitleAlwaysVisible="false" isActionAreaAlwaysVisible="false" objectTitle="{Fullname}" objectImageShape="Circle"
+						objectImageDensityAware="false" showPlaceholder="false"/>
+				</uxap:headerTitle>
+				<uxap:headerContent width="90%">
+					<FlexBox alignItems="Start" justifyContent="SpaceBetween" width="90%">
+						<items>
+							<l:VerticalLayout>
+								<ObjectStatus title="{i18n>label_employee}" text="{Employee}"/>
+								<ObjectStatus title="{i18n>label_shiftgroup}" text="{Shiftgroup}"/>
+							</l:VerticalLayout>
+							<l:VerticalLayout>
+								<ObjectStatus title="{i18n>label_orgunit}" text="{Orgunittext}"/>
+								<ObjectStatus title="{i18n>label_costcenter}" text="{Costcenter}"/>
+							</l:VerticalLayout>
+						</items>
+					</FlexBox>
+				</uxap:headerContent>
+				<uxap:ObjectPageSection id="shiftPlanSection" titleUppercase="false" showTitle="false">
+					<uxap:ObjectPageSubSection title="{i18n>empview_section_myshift}" titleUppercase="false">
+						<l:VerticalLayout class="sapUiNoPadding sapUiNoContentPadding sapUiNoMargin" width="100%">
+							<OverflowToolbar>
+								<ToolbarSpacer></ToolbarSpacer>
+								<Button icon="sap-icon://refresh" press="refresh"/>
+							</OverflowToolbar>
+							<ifx:EmployeeShiftCalendar id="calendar" months="2" select="handleCalendarSelect" cancel="handleCancel" width="100%" legend="legend1"
+								visible="false" startDateChange="handleStartDateChange" withdrawPreOTShift=".onWithdrawPreOTShift" cancelPreOTShift=".onCancelPreOTShift"></ifx:EmployeeShiftCalendar>
+							<u:CalendarLegend id="legend1"/>
+							<HBox alignContent="End" class="overtimeIconLegend sapUiLargeMarginEnd" visible="false" justifyContent="End"><core:Icon src="sap-icon://pending" color="#3F5161"/><Text class="sapUiTinyMarginBegin labelOTHourLegend" text="{i18n>ot_hour}"/></HBox>
+						</l:VerticalLayout>
+					</uxap:ObjectPageSubSection>
+				</uxap:ObjectPageSection>
+				<uxap:ObjectPageSection title="{i18n>empview_section_myattendance}" id="myAttendanceSection" titleUppercase="false" showTitle="false">
+					<uxap:ObjectPageSubSection title="{i18n>empview_section_myattendance}">
+						<mvc:XMLView viewName="com.infineon.ztmsapp.view.MyAttendance"/>
+					</uxap:ObjectPageSubSection>
+				</uxap:ObjectPageSection>
+				<!--	<uxap:ObjectPageSection title="{i18n>empview_section_otrequests}" id="otRequestsSection" titleUppercase="false" showTitle="false"
+					visible="false">
+					<uxap:ObjectPageSubSection title="{i18n>empview_section_otrequests}">
+						<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+							<core:Fragment id="orgFilterTeamAttendance" fragmentName="com.infineon.ztmsapp.fragments.OrgFilters" type="XML"></core:Fragment>
+							<Table id="tblOTApprovalEmployee" selectionChange=".onSelect($event,'otApproval')" inset="false" visible="false"
+								items="{ path: 'otApproval>/results' }" mode="None" growingScrollToLoad="true" growing="true" sticky="ColumnHeaders,HeaderToolbar"
+								updateFinished=".selectionEnablement($event,'otApproval')">
+								<headerToolbar>
+									<OverflowToolbar>
+										<Title text="{i18n>generic_overtime_approval} ({otApproval>/results/length})" level="H2"/>
+										<ToolbarSpacer/>
+										<Button enabled="{= ${otApproval>/results/length} > 0}" tooltip="{i18n>download_pdf}" icon="sap-icon://download"
+											press="onExportPDFotApproval"/>
+										<Button enabled="{= ${otApproval>/results/length} > 0}" tooltip="{i18n>download_spreadsheet}" icon="sap-icon://excel-attachment"
+											press="onExportXLSotApproval"/>
+										<Button class="sapMBtnInnerCustom" icon="sap-icon://refresh" busy="{orgFilter>/filterbusy}" press="search(${orgFilter>/param},$event,true)"/>
+									</OverflowToolbar>
+								</headerToolbar>
+								<columns>
+									<Column width="7em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_date}"/>
+									</Column>
+									<Column width="8em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_day}"/>
+									</Column>
+									<Column width="5em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_daytype}"/>
+									</Column>
+									<Column width="6em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_shiftgrp}"/>
+									</Column>
+									<Column width="5em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_shift}"/>
+									</Column>
+									<Column width="6em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_clockin}"/>
+									</Column>
+									<Column width="6em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_clockout}"/>
+									</Column>
+									<Column width="4em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_othours}"/>
+									</Column>
+									<Column width="9em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_adjothours}"/>
+									</Column>
+									<Column width="11em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_remarks}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" width="6em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>comments}"/>
+									</Column>
+									<Column width="10em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_status}"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem >
+										<cells>
+											<Text text="{ path: 'otApproval>Day', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+											<Text text="{otApproval>Weekday}"/>
+											<Text text="{otApproval>DayType}"/>
+											<Text text="{otApproval>ShiftGroup}"/>
+											<Text text="{otApproval>Shift}"/>
+											<Text text="{ parts: [{path: 'otApproval>Clockin'},{path: 'otApproval>ClockinFilled'}], formatter: '.formatTime'}"/>
+											<Text text="{ parts: [{path: 'otApproval>Clockout'},{path: 'otApproval>ClockoutFilled'}], formatter: '.formatTime'}"/>
+											<Text text="{ path: 'otApproval>OtHours', formatter: '.formatInt' }"/>
+											<Text tooltip="{otApproval>Tooltip}"
+												text="{ parts: [{path: 'otApproval>AdjOtHours'},{path: 'otApproval>AdjOtHoursFilled'}], formatter: '.formatZeroEmpty' }"/>
+											<Text text="{otApproval>Remarks}"/>
+											<core:Icon size="1.5em" press="onSetCommentOT($event,'otApproval')"
+												color="{ parts: [{path: 'otApproval>Comments'},{path: 'otApproval>Comments'}], formatter: '.formatter.getCommentColor'}"
+												tooltip="{otApproval>Comments}" src="sap-icon://post"/>
+											<HBox alignContent="Center" alignItems="Center" justifyContent="Center">
+												<Text text="{otApproval>StatusDesc}"/>
+											</HBox>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</l:VerticalLayout>
+					</uxap:ObjectPageSubSection>
+				</uxap:ObjectPageSection>-->
+				<uxap:ObjectPageSection title="{i18n>generic_pre_overtime_shift_approval}" id="otRequestPreOTShiftSection" titleUppercase="false"
+					showTitle="false" visible="false">
+					<uxap:ObjectPageSubSection title="{i18n>generic_pre_overtime_shift_approval}">
+						<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+							<core:Fragment id="orgFilterPreOTShiftApproval" fragmentName="com.infineon.ztmsapp.fragments.OrgFilters" type="XML"></core:Fragment>
+							<Table id="tblPreOTShiftApproval" selectionChange=".onSelect($event,'preOTShiftApproval')" inset="false" visible="false"
+								items="{ path: 'preOTShiftApproval>/results' }" mode="None" growingScrollToLoad="true" growing="true" sticky="ColumnHeaders,HeaderToolbar"
+								updateFinished=".selectionEnablement($event,'preOTShiftApproval')">
+								<headerToolbar>
+									<OverflowToolbar>
+										<Title text="{i18n>generic_pre_overtime_shift_approval} ({preOTShiftApproval>/results/length})" level="H2"/>
+										<ToolbarSpacer/>
+										<Button enabled="{= ${preOTShiftApproval>/results/length} > 0}" icon="sap-icon://email-read"
+											text="{i18n>mgrview_otapproval_action_setapprove}" press="onOTApprovalSetApprove"/>
+										<Button enabled="{= ${preOTShiftApproval>/results/length} > 0}" icon="sap-icon://accept" text="{i18n>mgrview_otapproval_action_setreject}"
+											press="onOTApprovalSetReject"/>
+										<Button enabled="{= ${preOTShiftApproval>/results/length} > 0}" icon="sap-icon://save" text="{i18n>generic_submit}" press="onOTApprovalSave"/>
+										<Button enabled="{= ${preOTShiftApproval>/results/length} > 0}" tooltip="{i18n>download_pdf}" icon="sap-icon://download"
+											press="onExportPDFotApproval"/>
+										<Button enabled="{= ${preOTShiftApproval>/results/length} > 0}" tooltip="{i18n>download_spreadsheet}" icon="sap-icon://excel-attachment"
+											press="onExportXLSotApproval"/>
+										<Button class="sapMBtnInnerCustom" icon="sap-icon://refresh" busy="{orgFilter>/filterbusy}" press="search(${orgFilter>/param},$event,true)"/>
+									</OverflowToolbar>
+								</headerToolbar>
+								<columns>
+									<Column width="6em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_employee}"/>
+									</Column>
+									<Column width="15em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_empname}"/>
+									</Column>
+									<Column width="7em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_date}"/>
+									</Column>
+									<Column width="8em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_day}"/>
+									</Column>
+									<Column width="5em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_daytype}"/>
+									</Column>
+									<Column width="6em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_shiftgrp}"/>
+									</Column>
+									<Column width="5em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_shift}"/>
+									</Column>
+									<Column width="5em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_timecorrection_adjshift}"/>
+									</Column>
+									<Column width="4em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_othours}"/>
+									</Column>
+									<Column width="9em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_adjothours}"/>
+									</Column>
+									<Column width="11em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_remarks}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" width="6em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>comments}"/>
+									</Column>
+									<Column width="10em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_status}"/>
+									</Column>
+									<Column width="10em" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>mgrview_otapproval_preot_status}"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem >
+										<cells>
+											<Text text="{preOTShiftApproval>Employee}"/>
+											<Text text="{preOTShiftApproval>EmployeeName}"/>
+											<Text text="{ path: 'preOTShiftApproval>Day', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+											<Text text="{preOTShiftApproval>Weekday}"/>
+											<Text text="{preOTShiftApproval>DayType}"/>
+											<Text text="{preOTShiftApproval>ShiftGroup}"/>
+											<Text text="{preOTShiftApproval>Shift}"/>
+											<Text text="{preOTShiftApproval>AdjShift}"/>
+											<Text text="{ path: 'preOTShiftApproval>OtHours', formatter: '.formatInt' }"/>
+											<Text
+												text="{ parts: [{path: 'preOTShiftApproval>AdjOtHours'},{path: 'preOTShiftApproval>AdjOtHoursFilled'}], formatter: '.formatZeroEmpty'}"/>
+											<Text text="{preOTShiftApproval>Remarks}"/>
+											<core:Icon size="1.5em" press="onSetCommentOT($event,'preOTShiftApproval')"
+												color="{ parts: [{path: 'preOTShiftApproval>Comments'},{path: 'preOTShiftApproval>Comments'}], formatter: '.formatter.getCommentColor'}"
+												tooltip="{otApproval>Comments}" src="sap-icon://post"/>
+											<HBox alignContent="Center" alignItems="Center" justifyContent="Center">
+												<Text text="{preOTShiftApproval>StatusDesc}"/>
+											</HBox>
+											<Text text="{preOTShiftApproval>PreotstatusDesc}"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</l:VerticalLayout>
+					</uxap:ObjectPageSubSection>
+				</uxap:ObjectPageSection>
+			</uxap:ObjectPageLayout>
+			<Panel id="messages" visible="false"></Panel>
+		</content>
+		<footer>
+			<OverflowToolbar id="otbFooter">
+				<ToolbarSpacer/>
+				<OverflowToolbarButton id="newRequest" text="Add" icon="sap-icon://add" press="onNewRequest" visible="false"
+					tooltip="{i18n>request_ot_or_shift_change}"/>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

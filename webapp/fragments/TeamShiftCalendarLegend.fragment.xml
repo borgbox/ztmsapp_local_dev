@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
+	xmlns:unified="sap.ui.unified">
+	<ResponsivePopover id="detailsPopover" title="{i18n>legend}" class="sapUiPopupWithPadding" placement="Auto">
+		<endButton>
+			<Button text="{i18n>close}" press="handleCancelButton"/>
+		</endButton>
+		<content>
+			<PlanningCalendarLegend id="PlanningCalendarLegend" standardItems="">
+				<items>
+<!--					<unified:CalendarLegendItem text="{i18n>non_working_day}" color="#d9d9d9" tooltip="{text}"/>
+					<unified:CalendarLegendItem text="{i18n>working_day}" color="#ffffff" tooltip="{text}"/>-->
+					<unified:CalendarLegendItem text="{i18n>change}" color="#1A9898" tooltip="{text}"/>
+					<unified:CalendarLegendItem text="{i18n>public_holiday}" color="#FF8888" tooltip="{text}"/>
+					<unified:CalendarLegendItem text="{i18n>off_rest_day}" color="#ABE2AB" tooltip="{text}"/>
+					<unified:CalendarLegendItem text="{i18n>half_leave}" color="#AB218E" tooltip="{text}"/>
+					<unified:CalendarLegendItem text="{i18n>leave}" color="#E78C07" tooltip="{text}"/>
+					<unified:CalendarLegendItem text="{i18n>pending_leave_request}" color="#9EC7D8" tooltip="{text}"/>
+<!--<unified:CalendarLegendItem text="Type01" type="Type01" tooltip="Type01"/>
+<unified:CalendarLegendItem text="Type02" type="Type02" tooltip="Type02"/>
+<unified:CalendarLegendItem text="Type03" type="Type03" tooltip="Type03"/>
+<unified:CalendarLegendItem text="Type04" type="Type04" tooltip="Type04"/>
+<unified:CalendarLegendItem text="Type05" type="Type05" tooltip="Type05"/>
+<unified:CalendarLegendItem text="Type06" type="Type06" tooltip="Type06"/>
+<unified:CalendarLegendItem text="Type07" type="Type07" tooltip="Type07"/>
+<unified:CalendarLegendItem text="Type08" type="Type08" tooltip="Type08"/>
+<unified:CalendarLegendItem text="Type09" type="Type09" tooltip="Type09"/>
+<unified:CalendarLegendItem text="Type10" type="Type10" tooltip="Type10"/>
+<unified:CalendarLegendItem text="Type11" type="Type11" tooltip="Type11"/>
+<unified:CalendarLegendItem text="Type12" type="Type12" tooltip="Type12"/>
+<unified:CalendarLegendItem text="Type13" type="Type13" tooltip="Type13"/>
+<unified:CalendarLegendItem text="Type14" type="Type14" tooltip="Type14"/>
+<unified:CalendarLegendItem text="Type15" type="Type15" tooltip="Type15"/>
+<unified:CalendarLegendItem text="Type16" type="Type16" tooltip="Type16"/>
+<unified:CalendarLegendItem text="Type17" type="Type17" tooltip="Type17"/>
+<unified:CalendarLegendItem text="Type18" type="Type18" tooltip="Type18"/>
+<unified:CalendarLegendItem text="Type19" type="Type19" tooltip="Type19"/>
+<unified:CalendarLegendItem text="Type20" type="Type20" tooltip="Type20"/>-->
+				</items>
+				<appointmentItems></appointmentItems>
+			</PlanningCalendarLegend>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns="sap.ui.comp.valuehelpdialog" xmlns:m="sap.m" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar">
+	<ValueHelpDialog title="{i18n>employee}" ok=".onValueHelpEmployeeSearchOkPress" cancel=".onValueHelpEmployeeSearchCancelPress" afterClose=".onValueHelpEmployeeSearchAfterClose" supportMultiselect="true" key="Employee" descriptionKey="Fullname">
+		<filterBar>
+			<fb:FilterBar filterContainerWidth="15rem" advancedMode="true" search="onFilterSearchEmployee">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="SearchStr" visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="searchstr" placeholder="{i18n>generic_employee_search_placeholder}" fieldWidth="100%" textAlign="Begin"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+		</filterBar>
+	</ValueHelpDialog>
+</core:FragmentDefinition>

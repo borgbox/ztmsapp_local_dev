@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<Popover title="{i18n>upload_employee}" class="sapUiContentPadding" placement="Bottom" initialFocus="email">
+		<content>
+			<f:SimpleForm editable="true" layout="GridLayout" labelSpanXL="1" labelSpanL="1" labelSpanM="1" labelSpanS="12" adjustLabelSpan="false"
+				emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"
+				width="28em">
+				<f:content>
+					<VBox fitContainer="true" alignContent="Center" justifyContent="Center">
+						<Label text="{i18n>upload_employee_tip}"/>
+						<FlexBox alignItems="Center" justifyContent="Center">
+							<items>
+								<TextArea height="20em" width="25em" valueLiveUpdate="true" value="{employeeRange>/employees}"/>
+							</items>
+						</FlexBox>
+					</VBox>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>upload}" press="uploadEmployees"/>
+				<Button text="{i18n>generic_close}" press="handleCloseUploadEmployee"/>
+			</OverflowToolbar>
+		</footer>
+	</Popover>
+</core:FragmentDefinition>

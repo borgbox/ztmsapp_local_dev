@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<Dialog title="{i18n>confirm}">
+		<content>
+			<f:SimpleForm editable="true" layout="GridLayout" labelSpanXL="1" labelSpanL="1" labelSpanM="1" labelSpanS="12" adjustLabelSpan="false"
+				emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"
+				width="580px">
+				<f:content>
+					<VBox>
+						<Label text="{i18n>empview_attendance_date}"/>
+						<DatePicker id="dtShift" minDate="{teamfilterval>/fromdateL1}" maxDate="{teamfilterval>/todateL1}" change=".onSelectDateShift(${teamShiftView>/date},$event)"
+							value="{ path: 'teamShiftView>/date', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"></DatePicker>
+						<Label text="{i18n>available_shifts}"/>
+						<Select id="selShift" width="100%" items="{teamShiftOptions>/}" selectedKey="{teamShiftView>/shift}" change=".checkSelectedShift">
+							<core:Item key="{teamShiftOptions>shift}" text="{teamShiftOptions>shift}"/>
+						</Select>
+					</VBox>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button class="sapMBtnInnerCustom" text="{i18n>generic_update}" press=".updateSelectedRows"/>
+			<Button class="sapMBtnInnerCustom" text="{i18n>generic_cancel}" press=".closeMassUpdateDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

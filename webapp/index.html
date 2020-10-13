@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+		<title>TMS - Time Management Solution</title>
+		
+		<script id="sap-ui-bootstrap"
+			src="https://sapui5.hana.ondemand.com/1.71.13/resources/sap-ui-core.js"
+			data-sap-ui-libs="sap.m, sap.ui.unified, sap.ui.layout, sap.uxap, sap.ui.core, sap.ui.comp"
+			data-sap-ui-preload="async"
+			data-sap-ui-xx-bindingSyntax="complex"
+			data-sap-ui-compatVersion="edge" data-sap-ui-theme="sap_fiori_3"
+			data-sap-ui-resourceroots='{"com.infineon.ztmsapp": ""}'
+			data-sap-ui-language="en"
+			data-sap-ui-appCacheBuster="./">			
+		</script>
+		<script>
+	
+		//src="./resources/sap-ui-cachebuster/sap-ui-core.js"
+			sap.ui.getCore().attachInit(function() {
+				
+				let isIE = /*@cc_on!@*/false || !!document.documentMode;
+		     	if (isIE) {
+		     		//var oShell = new ActiveXObject("Shell.Application");
+					//var commandRun = "start chrome " + window.location.href;
+					//oShell.ShellExecute(commandRun, "","","","1");
+                  	sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
+                  		     		MessageBox.error(
+                  		     			"Browser not supported", {
+                  		     				details: "Please open the application using Chrome or Edge",
+                  		     				actions: [MessageBox.Action.CLOSE],
+                  		     				onClose: function () {
+                  		     				}.bind(this)
+                  		     			}
+                  		     		);
+                  	});		     		
+		     	}				
+        	
+				new sap.m.Shell({
+					app: new sap.ui.core.ComponentContainer({
+						height : "100%",
+						width : "100%",
+						async: true,
+						name : "com.infineon.ztmsapp"
+					})
+				}).placeAt("content");        	
+        	
+        		
+				
+
+				//var oResponse = jQuery.sap.sjax({url:"/sap/public/bc/themes/~client-410/UI5/sap/ui/core/themes/custom_ifx_bluecrystal/library.css"});
+	    		//if (!oResponse.success) {
+	    		//	sap.ui.getCore().applyTheme("sap_belize");
+	    	   	//}
+
+			});
+			function applyIFXTheme()
+			{
+				sap.ui.getCore().applyTheme("custom_ifx_bluecrystal", "/sap/public/bc/themes/~client-410/UI5/");
+			}
+			
+		</script>
+	</head>
+	<body class="sapUiBody">
+		<div id="content" ></div>
+	</body>
+</html>

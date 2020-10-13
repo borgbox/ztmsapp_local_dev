@@ -1,0 +1,17 @@
+<mvc:View
+	controllerName="com.infineon.ztmsapp.controller.NotAvailable"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+
+	<MessagePage
+		title="{i18n>main_tms_unavailable_title}"
+		text="{i18n>main_tms_unavailable}"
+		icon="sap-icon://disconnected"
+		id="pageNotAvailable"
+		description="">
+		<customDescription>
+			<Link id="link" text="{i18n>backToMain}" press=".onLinkPressed" visible="false"/>
+		</customDescription>
+	</MessagePage>
+
+</mvc:View>

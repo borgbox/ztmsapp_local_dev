@@ -1,0 +1,17 @@
+<mvc:View
+	controllerName="com.infineon.ztmsapp.controller.NotAuthorized"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+
+	<MessagePage
+		title="{i18n>notAuthorizedTitle}"
+		text="{i18n>contact_system_adm}"
+		icon="sap-icon://document"
+		id="page"
+		description="">
+		<customDescription>
+			<Link id="link" text="{i18n>backToMain}" press=".onLinkPressed" visible="false"/>
+		</customDescription>
+	</MessagePage>
+
+</mvc:View>

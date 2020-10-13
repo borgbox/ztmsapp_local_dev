@@ -1,0 +1,585 @@
+<mvc:View xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:unified="sap.ui.unified" xmlns:ifx="com.infineon.ztmsapp.custom"
+	xmlns:uxap="sap.uxap" controllerName="com.infineon.ztmsapp.controller.TeamShiftCalendar">
+	<l:HorizontalLayout class="sapUiNoContentPadding" busy="{appView>/busy}">
+		<HBox>
+			<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+				<Label text="{i18n>empview_attendance_fromdate}"/>
+				<HBox>
+					<Button class="sapMBtnInnerCustom" tooltip="{i18n>prev7days}" icon="sap-icon://nav-back"
+						press=".onSearchTeamShift(${currentRole>/currentRole},'PREV')"></Button>
+					<DatePicker id="dtBegin" width="150px" class="sapUiSmallMarginBegin sapUiSmallMarginEnd"
+						value="{ path: 'teamfilterval>/fromdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"
+						change="updateEndDate"></DatePicker>
+					<Button class="sapMBtnInnerCustom" tooltip="{i18n>next7days}" icon="sap-icon://navigation-right-arrow"
+						press=".onSearchTeamShift(${currentRole>/currentRole},'NEXT')"></Button>
+				</HBox>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiSmallMarginBegin" width="100%">
+				<Label text="{i18n>label_employeeid}"/>
+				<HBox>
+					<MultiInput id="mipEmployee" type="Text" placeholder="" showSuggestion="false" showValueHelp="true" startSuggestion="2"
+						tokenUpdate="onUpdateTokeEmployee($event)" liveChange=".onInputEmployee($event)" valueHelpRequest="onValueEmployeeSearchHelp($event,false)"
+						value="{ path: 'teamfilterval>/employeeid' }"
+						suggestionItems="{ path: '/EmployeeDataSet', sorter: { path: 'Employee' }, parameters: {select: 'Employee,Fullname', operationMode: 'Client' } }"
+						suggestionItemSelected="suggestionSelected($event,${teamfilterval>/param})">
+						<suggestionItems>
+							<core:ListItem key="{Employee}" text="{Fullname} ({Employee})"/>
+						</suggestionItems>
+					</MultiInput>
+				</HBox>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+				<Label text=""/>
+				<Button class="sapMBtnInnerCustom sapUiTinyMarginBegin" icon="sap-icon://upload" tooltip="{i18n>upload_employee}"
+					press="onOpenEmployeeRange"></Button>
+			</l:VerticalLayout>
+			<!--			<l:VerticalLayout class="sapUiSmallMarginBegin sapUiTinyMarginEnd"
+				visible="{path: 'currentRole>/currentRole', formatter: '.formatter.isRequestor' }">
+				<Label text="{i18n>label_orgunit}" required="true"/>
+				<MultiComboBox id="idOrgUn" items="{ path: '/OrgUnitSet', sorter: { path: 'Value' } }" selectedKeys="{ path: 'teamfilterval>/orgunit' }">
+					<core:Item key="{Key}" text="{Value}"/>
+				</MultiComboBox>
+			</l:VerticalLayout>-->
+			<l:VerticalLayout class="sapUiSmallMarginBegin sapUiTinyMarginEnd">
+				<Label text="{i18n>label_orgunit}" required="true"/>
+				<MultiComboBox editable="true" id="idOrgUn" busy="{intervalsTMS>/busy}"
+					items="{ path: 'intervalsTMS>/OrgUnitSet', sorter: { path: 'Value' } }" selectedKeys="{ path: 'teamfilterval>/orgunit' }">
+					<core:Item key="{intervalsTMS>Key}" text="{intervalsTMS>Value}"/>
+				</MultiComboBox>
+				<!--				<ifx:MultiComboBoxSelectAll editable="true" id="idOrgUn2" items="{ path: '/OrgUnitSet', sorter: { path: 'Value' } }" selectedKeys="{ path: 'teamfilterval>/orgunit' }">
+					<core:Item key="{Key}" text="{Value}"/>
+				</ifx:MultiComboBoxSelectAll>	-->
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+				<Label text=""/>
+				<Button class="sapMBtnInnerCustom sapUiSmallMarginBegin" text="Go" press="onSearchTeamShift(${currentRole>/currentRole})"></Button>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiNoContentPadding" width="100%">
+				<Label text=""/>
+				<Button text="{i18n>reset_btn}" class="sapMBtnInnerCustom sapUiSmallMarginBegin" press="reset"/>
+			</l:VerticalLayout>
+		</HBox>
+		<l:VerticalLayout class="sapUiContentPadding" width="100%" visible="false">
+			<Label text="{i18n>empview_attendance_todate}"/>
+			<DatePicker id="teamShiftTodate" change="validateDateIntervalTeamShift" class="sapUiTinyMarginBottom"
+				value="{ path: 'teamfilterval>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"/>
+		</l:VerticalLayout>
+		<l:VerticalLayout class="sapUiContentPadding" width="100%" visible="false">
+			<Button text="Go" press="onSearchTeamShift(${currentRole>/currentRole})"></Button>
+		</l:VerticalLayout>
+	</l:HorizontalLayout>
+	<unified:CalendarLegend class="sapUiNoContentPadding sapUiNoPadding sapUiNoMargin" id="legendTeamShift" standardItems="" visible="false"/>
+	<VBox busy="{appView>/busy}">
+		<Table visible="false" sticky="ColumnHeaders,HeaderToolbar" growingScrollToLoad="true" growing="true" id="tblTeamShift"
+			items="{ path: 'teamShift>/', sorter: { path: 'Day' } }" updateFinished="onUpdateFinish" mode="MultiSelect">
+			<headerToolbar>
+				<OverflowToolbar visible="{stateModel>/visible}">
+					<Label text="({teamShift>/length}) {i18n>label_employees}"/>
+					<MultiComboBox id="mcbEmployee" width="200px" showSecondaryValues="true" items="{ path: 'teamShift>/', sorter: { path: 'name' } }"
+						selectionChange=".selectEmployee">
+						<core:ListItem key="{teamShift>data/pernr}" text="{teamShift>data/name} ({teamShift>data/pernr})"/>
+					</MultiComboBox>
+					<Button class="sapMBtnInnerCustom sapUiSmallMarginEnd" icon="sap-icon://delete" press=".cleanFilter"></Button>
+					<ToolbarSpacer/>
+					<Button class="sapMBtnInnerCustom" text="{i18n>submit}" press=".onSave"></Button>
+					<Button class="sapMBtnInnerCustom" text="{i18n>mass_update}" press=".onMassUpdate"></Button>
+					<ToggleButton pressed="{path: 'stateModel>/legendShown'}" icon="sap-icon://legend" visible="false" press="onLegendShow"/>
+					<Button icon="sap-icon://refresh" press="onSearchTeamShift(${currentRole>/currentRole})"/>
+				</OverflowToolbar>
+			</headerToolbar>
+			<columns></columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<VBox alignItems="Start">
+							<Text class="sapUiTinyMarginTopBottom" text="{teamShift>data/name}"/>
+							<Text class="sapUiTinyMarginTop covText" text="{teamShift>data/CoverOffiName}"/>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_0')" enabled="{teamShift>_0/CanChangeShift}"
+									tooltip="{teamShift>_0/valueStateText}" valueStateText="{teamShift>_0/valueStateText}" valueState="{teamShift>_0/valueState}"
+									selectedKey="{teamShift>_0/shift}" items="{ path: 'teamShift>_0/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_0/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_0/Violation}"
+									visible="{= ${teamShift>_0/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_0')" tooltip="{teamShift>_0/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_0/OtHours'},{path: 'teamShift>_0/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_0/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_0/OtHours'},{path: 'teamShift>_0/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_0/CanCreateOt} &amp;&amp; ${teamShift>_0/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_0/CanCreateOt} &amp;&amp; ${teamShift>_0/OthoursFilled} }"
+									tooltip="{= ${teamShift>_0/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_0/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_0/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_0/MessageOt}" color="{path: 'teamShift>_0/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_0/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_1')" enabled="{teamShift>_1/CanChangeShift}"
+									tooltip="{teamShift>_1/valueStateText}" valueStateText="{teamShift>_1/valueStateText}" valueState="{teamShift>_1/valueState}"
+									selectedKey="{teamShift>_1/shift}" items="{ path: 'teamShift>_1/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_1/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_1/Violation}"
+									visible="{=${teamShift>_1/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_1')" tooltip="{teamShift>_1/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_1/OtHours'},{path: 'teamShift>_1/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_1/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_1/OtHours'},{path: 'teamShift>_1/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_1/CanCreateOt} &amp;&amp; ${teamShift>_1/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_1/CanCreateOt} &amp;&amp; ${teamShift>_1/OthoursFilled} }"
+									tooltip="{= ${teamShift>_1/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_1/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_1/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_1/MessageOt}" color="{path: 'teamShift>_1/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_1/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_2')" enabled="{teamShift>_2/CanChangeShift}"
+									tooltip="{teamShift>_2/valueStateText}" valueStateText="{teamShift>_2/valueStateText}" valueState="{teamShift>_2/valueState}"
+									selectedKey="{teamShift>_2/shift}" items="{ path: 'teamShift>_2/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_2/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_2/Violation}"
+									visible="{=${teamShift>_2/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_2')" tooltip="{teamShift>_2/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_2/OtHours'},{path: 'teamShift>_2/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_2/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_2/OtHours'},{path: 'teamShift>_2/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_2/CanCreateOt} &amp;&amp; ${teamShift>_2/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_2/CanCreateOt} &amp;&amp; ${teamShift>_2/OthoursFilled} }"
+									tooltip="{= ${teamShift>_2/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_2/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_2/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_2/MessageOt}" color="{path: 'teamShift>_2/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_2/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_3')" enabled="{teamShift>_3/CanChangeShift}"
+									tooltip="{teamShift>_3/valueStateText}" valueStateText="{teamShift>_3/valueStateText}" valueState="{teamShift>_3/valueState}"
+									selectedKey="{teamShift>_3/shift}" items="{ path: 'teamShift>_3/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_3/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_3/Violation}"
+									visible="{=${teamShift>_3/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_3')" tooltip="{teamShift>_3/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_3/OtHours'},{path: 'teamShift>_3/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_3/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_3/OtHours'},{path: 'teamShift>_3/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_3/CanCreateOt} &amp;&amp; ${teamShift>_3/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_3/CanCreateOt} &amp;&amp; ${teamShift>_3/OthoursFilled} }"
+									tooltip="{= ${teamShift>_3/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_3/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_3/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_3/MessageOt}" color="{path: 'teamShift>_3/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_3/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_4')" enabled="{teamShift>_4/CanChangeShift}"
+									tooltip="{teamShift>_4/valueStateText}" valueStateText="{teamShift>_4/valueStateText}" valueState="{teamShift>_4/valueState}"
+									selectedKey="{teamShift>_4/shift}" items="{ path: 'teamShift>_4/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_4/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_4/Violation}"
+									visible="{=${teamShift>_4/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_4')" tooltip="{teamShift>_4/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_4/OtHours'},{path: 'teamShift>_4/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_4/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_4/OtHours'},{path: 'teamShift>_4/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_4/CanCreateOt} &amp;&amp; ${teamShift>_4/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_4/CanCreateOt} &amp;&amp; ${teamShift>_4/OthoursFilled} }"
+									tooltip="{= ${teamShift>_4/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_4/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_4/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_4/MessageOt}" color="{path: 'teamShift>_4/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_4/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_5')" enabled="{teamShift>_5/CanChangeShift}"
+									tooltip="{teamShift>_5/valueStateText}" valueStateText="{teamShift>_5/valueStateText}" valueState="{teamShift>_5/valueState}"
+									selectedKey="{teamShift>_5/shift}" items="{ path: 'teamShift>_5/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_5/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_5/Violation}"
+									visible="{=${teamShift>_5/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_5')" tooltip="{teamShift>_5/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_5/OtHours'},{path: 'teamShift>_5/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_5/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_5/OtHours'},{path: 'teamShift>_5/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_5/CanCreateOt} &amp;&amp; ${teamShift>_5/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_5/CanCreateOt} &amp;&amp; ${teamShift>_5/OthoursFilled} }"
+									tooltip="{= ${teamShift>_5/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_5/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_5/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_5/MessageOt}" color="{path: 'teamShift>_5/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_5/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_6')" enabled="{teamShift>_6/CanChangeShift}"
+									tooltip="{teamShift>_6/valueStateText}" valueStateText="{teamShift>_6/valueStateText}" valueState="{teamShift>_6/valueState}"
+									selectedKey="{teamShift>_6/shift}" items="{ path: 'teamShift>_6/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_6/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_6/Violation}"
+									visible="{=${teamShift>_6/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_6')" tooltip="{teamShift>_6/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_6/OtHours'},{path: 'teamShift>_6/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_6/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_6/OtHours'},{path: 'teamShift>_6/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_6/CanCreateOt} &amp;&amp; ${teamShift>_6/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_6/CanCreateOt} &amp;&amp; ${teamShift>_6/OthoursFilled} }"
+									tooltip="{= ${teamShift>_6/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_6/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_6/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_6/MessageOt}" color="{path: 'teamShift>_6/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_6/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_7')" enabled="{teamShift>_7/CanChangeShift}"
+									tooltip="{teamShift>_7/valueStateText}" valueStateText="{teamShift>_7/valueStateText}" valueState="{teamShift>_7/valueState}"
+									selectedKey="{teamShift>_7/shift}" items="{ path: 'teamShift>_7/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_7/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_7/Violation}"
+									visible="{=${teamShift>_7/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_7')" tooltip="{teamShift>_7/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_7/OtHours'},{path: 'teamShift>_7/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_7/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_7/OtHours'},{path: 'teamShift>_7/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_7/CanCreateOt} &amp;&amp; ${teamShift>_7/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_7/CanCreateOt} &amp;&amp; ${teamShift>_7/OthoursFilled} }"
+									tooltip="{= ${teamShift>_7/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_7/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_7/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_7/MessageOt}" color="{path: 'teamShift>_7/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_7/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_8')" enabled="{teamShift>_8/CanChangeShift}"
+									tooltip="{teamShift>_8/valueStateText}" valueStateText="{teamShift>_8/valueStateText}" valueState="{teamShift>_8/valueState}"
+									selectedKey="{teamShift>_8/shift}" items="{ path: 'teamShift>_8/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_8/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_8/Violation}"
+									visible="{=${teamShift>_8/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_8')" tooltip="{teamShift>_8/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_8/OtHours'},{path: 'teamShift>_8/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_8/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_8/OtHours'},{path: 'teamShift>_8/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_8/CanCreateOt} &amp;&amp; ${teamShift>_8/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_8/CanCreateOt} &amp;&amp; ${teamShift>_8/OthoursFilled} }"
+									tooltip="{= ${teamShift>_8/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_8/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_8/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_8/MessageOt}" color="{path: 'teamShift>_8/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_8/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_9')" enabled="{teamShift>_9/CanChangeShift}"
+									tooltip="{teamShift>_9/valueStateText}" valueStateText="{teamShift>_9/valueStateText}" valueState="{teamShift>_9/valueState}"
+									selectedKey="{teamShift>_9/shift}" items="{ path: 'teamShift>_9/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_9/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_9/Violation}"
+									visible="{=${teamShift>_9/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_9')" tooltip="{teamShift>_9/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_9/OtHours'},{path: 'teamShift>_9/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_9/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_9/OtHours'},{path: 'teamShift>_9/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_9/CanCreateOt} &amp;&amp; ${teamShift>_9/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= !${teamShift>_9/CanCreateOt} &amp;&amp; ${teamShift>_9/OthoursFilled} }"
+									tooltip="{= ${teamShift>_9/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_9/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_9/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_9/MessageOt}" color="{path: 'teamShift>_9/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_9/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_10')" enabled="{teamShift>_10/CanChangeShift}"
+									tooltip="{teamShift>_10/valueStateText}" valueStateText="{teamShift>_10/valueStateText}" valueState="{teamShift>_10/valueState}"
+									selectedKey="{teamShift>_10/shift}" items="{ path: 'teamShift>_10/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_10/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_10/Violation}"
+									visible="{=${teamShift>_10/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_10')" tooltip="{teamShift>_10/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_10/OtHours'},{path: 'teamShift>_10/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_10/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_10/OtHours'},{path: 'teamShift>_10/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_10/CanCreateOt} &amp;&amp; ${teamShift>_10/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em"
+									visible="{= !${teamShift>_10/CanCreateOt} &amp;&amp; ${teamShift>_10/OthoursFilled} }"
+									tooltip="{= ${teamShift>_10/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_10/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_10/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_10/MessageOt}" color="{path: 'teamShift>_10/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_10/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_11')" enabled="{teamShift>_11/CanChangeShift}"
+									tooltip="{teamShift>_11/valueStateText}" valueStateText="{teamShift>_11/valueStateText}" valueState="{teamShift>_11/valueState}"
+									selectedKey="{teamShift>_11/shift}" items="{ path: 'teamShift>_11/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_11/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_11/Violation}"
+									visible="{=${teamShift>_11/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_11')" tooltip="{teamShift>_11/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_11/OtHours'},{path: 'teamShift>_11/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_11/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_11/OtHours'},{path: 'teamShift>_11/OthoursFilled'}], formatter: '.formatter.formatOTHour'} "
+									visible="{= !${teamShift>_11/CanCreateOt} &amp;&amp; ${teamShift>_11/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em"
+									visible="{= !${teamShift>_11/CanCreateOt} &amp;&amp; ${teamShift>_11/OthoursFilled} }"
+									tooltip="{= ${teamShift>_11/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_11/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_11/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_11/MessageOt}" color="{path: 'teamShift>_11/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_11/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_12')" enabled="{teamShift>_12/CanChangeShift}"
+									tooltip="{teamShift>_12/valueStateText}" valueStateText="{teamShift>_12/valueStateText}" valueState="{teamShift>_12/valueState}"
+									selectedKey="{teamShift>_12/shift}" items="{ path: 'teamShift>_12/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_12/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_12/Violation}"
+									visible="{=${teamShift>_12/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_12')" tooltip="{teamShift>_12/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_12/OtHours'},{path: 'teamShift>_12/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_12/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_12/OtHours'},{path: 'teamShift>_12/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_12/CanCreateOt} &amp;&amp; ${teamShift>_12/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em"
+									visible="{= !${teamShift>_12/CanCreateOt} &amp;&amp; ${teamShift>_12/OthoursFilled} }"
+									tooltip="{= ${teamShift>_12/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_12/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_12/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_12/MessageOt}" color="{path: 'teamShift>_12/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_12/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox alignItems="Center" class="sapUiNoPadding sapUiNoMargin">
+							<HBox fitContainer="true" width="100%" alignItems="Stretch" alignContent="Center" justifyContent="Center"
+								class="sapUiNoPadding sapUiNoMargin boxLarge">
+								<Select class="select-min-text" width="100%" change=".onChangeShift($event,'_13')" enabled="{teamShift>_13/CanChangeShift}"
+									tooltip="{teamShift>_13/valueStateText}" valueStateText="{teamShift>_13/valueStateText}" valueState="{teamShift>_13/valueState}"
+									selectedKey="{teamShift>_13/shift}" items="{ path: 'teamShift>_13/shiftSet', templateShareable: 'false' }">
+									<core:Item key="{teamShift>shift}" text="{teamShift>shift}"/>
+									<customData>
+										<core:CustomData xmlns:core="sap.ui.core" key="datakindcolor" value="{teamShift>_13/dateKindColor}" writeToDom="true"/>
+									</customData>
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Select>
+								<ifx:IconPopoverTooltip size="1.3em" class="badge-select" textPopover="{teamShift>_13/Violation}"
+									visible="{=${teamShift>_13/Violation}.length > 0 }" tooltip=" " color="#BB0000" src="sap-icon://error"/>
+							</HBox>
+							<HBox height="1.4em">
+								<Link class="customLinkStyle" press="onSetOverTime($event,'_13')" tooltip="{teamShift>_13/MessageOt}"
+									text="{ parts: [{path: 'teamShift>_13/OtHours'},{path: 'teamShift>_13/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{teamShift>_13/CanCreateOt}"></Link>
+								<Text class="fontGreenImportant"
+									text="{ parts: [{path: 'teamShift>_13/OtHours'},{path: 'teamShift>_13/OthoursFilled'}], formatter: '.formatter.formatOTHour'}"
+									visible="{= !${teamShift>_13/CanCreateOt} &amp;&amp; ${teamShift>_13/OthoursFilled} }"></Text>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em"
+									visible="{= !${teamShift>_13/CanCreateOt} &amp;&amp; ${teamShift>_13/OthoursFilled} }"
+									tooltip="{= ${teamShift>_13/OtHoursApproved} ? ${i18n>OTapproved} : ${i18n>OTpending} }" color="#2B7D2B"
+									src="{= ${teamShift>_13/OtHoursApproved} ? 'sap-icon://accept' : 'sap-icon://lateness' }"/>
+								<core:Icon class="sapUiVeryTinyMarginBegin" size="1em" visible="{= ${teamShift>_13/StatusReqOt}.length > 0 }"
+									tooltip="{teamShift>_13/MessageOt}" color="{path: 'teamShift>_13/StatusReqOt', formatter: '.formatter.getOTStatusColor' }"
+									src="{path: 'teamShift>_13/StatusReqOt', formatter: '.formatter.getOTStatusIcon' }"/>
+							</HBox>
+						</VBox>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+		<!--PLAN B-->
+	</VBox>
+</mvc:View>

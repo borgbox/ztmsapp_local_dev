@@ -1,0 +1,34 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<Dialog title="{i18n>mgrview_covoffdialog_title}" contentWidth="550px">
+		<content>
+			<f:SimpleForm editable="true" layout="GridLayout" labelSpanXL="2" labelSpanL="2" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false"
+				emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false"
+				width="500px">
+				<f:content>
+					<Label text="{i18n>mgrview_fromdate}"/>
+					<DatePicker id="crtcovofffromdate" placeholder="{i18n>enter_date}"
+						value="{ path: 'newcovoffrequest>/fromdate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"
+						change="handleChange" class="sapUiSmallMarginBottom" minDate="{newcovoffrequest>/currentDate}"/>
+					<Label text="{i18n>mgrview_todate}"/><DatePicker id="crtcovofftodate" placeholder="{i18n>enter_date}" minDate="{newcovoffrequest>/currentDate}"
+						value="{ path: 'newcovoffrequest>/todate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd.MM.yyyy' } }"
+						change="handleChange" class="sapUiSmallMarginBottom"/>
+					<Label text="{i18n>generic_person}"/>
+					<Input type="Text" placeholder="" showSuggestion="false" showValueHelp="true" valueHelpRequest="onValueEmployeeSearchHelp($event,true)"
+						value="{newcovoffrequest>/covoff}"
+						suggestionItems="{ path: '/EmployeeDataSet', sorter: { path: 'Employee' }, parameters: {select: 'Employee,Fullname', operationMode: 'Client' } }"
+						liveChange="onEmployeeInput" suggestionItemSelected="suggestionSelected">
+						<suggestionItems>
+							<core:ListItem text="{Employee}" additionalText="{Fullname} ({Employee})"/>
+						</suggestionItems>
+					</Input>
+					<Label text="{i18n>mgrview_reason}"/><TextArea value="{newcovoffrequest>/reason}" rows="8"/>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="{i18n>generic_cancel}" press="closeDialog"/>
+			<Button text="{i18n>generic_submit}" press="saveDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

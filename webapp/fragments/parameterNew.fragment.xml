@@ -1,0 +1,24 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<Dialog title="{i18n>supportview_newparameter_title}" contentWidth="700px">
+		<content>
+			<f:SimpleForm editable="true" layout="GridLayout" labelSpanXL="2" labelSpanL="2" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false"
+				emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false"
+				width="700px">
+				<f:content>
+					<Label text="{i18n>supportview_cfgkey1}"/>
+					<Input type="Text" value="{newparameter>/Cfgkey1}"></Input>
+					<Label text="{i18n>supportview_cfgkey2}"/><Input type="Text" value="{newparameter>/Cfgkey2}"></Input>
+					<Label text="{i18n>supportview_cfgvalue}"/><Input type="Text" value="{newparameter>/Cfgvalue}"></Input>
+					<Label text="{i18n>supportview_comment}"/><TextArea value="{newparameter>/Cfgcomment}" rows="8"/>
+					<Label text="{i18n>supportview_businessapp}"/><Input type="Text" value="{newparameter>/BusinessApp}"></Input>
+					<Label text="{i18n>supportview_businessrule}"/><Input type="Text" value="{newparameter>/BusinessRule}"></Input>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="{i18n>generic_cancel}" press="closeDialog"/>
+			<Button text="{i18n>generic_submit}" press="saveDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
